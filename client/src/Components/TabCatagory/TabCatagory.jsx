@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const TabCatagory = () => {
-  // const [jobs, setJobs] =useState([])
+  const [jobs, setJobs] =useState([])
 
-  // useEffect(()=>{
-  //   const getData = async () =>{
-  //       const {data} = await axios.get(`${import.meta.env.VITE_api}/jobs`)
-  //       setJobs(data)
-  //   }
-  //   getData();
-  // },[])
+  useEffect(()=>{
+    const getData = async () =>{
+        const {data} = await axios.get(`${import.meta.env.VITE_api}/jobs`)
+        setJobs(data)
+    }
+    getData();
+  },[])
 
 
   return (
