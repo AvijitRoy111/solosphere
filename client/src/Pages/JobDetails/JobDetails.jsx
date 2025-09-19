@@ -1,20 +1,66 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 const JobDetails = () => {
-     const {user} =useContext(AuthContext)
-     const job = useLoaderData();
-     const {_id, buyer_email, job_title, catagory, deadline, description, min_price, max_price} = job;
+  const { user } = useContext(AuthContext);
+  const job = useLoaderData();
+  const [startDate, setStartDate] = useState(new Date());
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const {
+    _id,
+    buyer_email,
+    job_title,
+    catagory,
+    deadline,
+    description,
+    min_price,
+    max_price,
+  } = job;
 
-     const handleFormSunmit = async (e) =>{
-          e.preventDefault()
-     }
+  const handleFormSunmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const jobId = _id;
+    const price = form.price.value;
+    const email = form.email.value;
+    const description = form.comment.value;
+    const deadline = startDate;
+    const status = "pending";
+
+    const bidData = {
+      jobId,
+      price,
+      email,
+      description,
+      job_title,
+      buyer_email,
+      catagory,
+      deadline,
+      status,
+    };
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_api}/bids`,
+        bidData
+      );
+      if (data.insertedId) {
+        setIsModalOpen(true); // modal show
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
-    <div className="flex flex-col md:flex-row justify-around gap-5  items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto mt-10">
+    <div className="relative flex flex-col md:flex-row justify-around gap-5 items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto mt-10">
       {/* Job Details */}
-      <div className="flex-1  px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px]">
+      <div className="flex-1 px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px]">
         <div className="flex items-center justify-between">
           <span className="text-sm font-light text-gray-800 ">
             Deadline: {deadline}
@@ -37,8 +83,10 @@ const JobDetails = () => {
           </p>
           <div className="flex items-center gap-5">
             <div>
-              <p className="mt-2 text-sm  text-gray-600 ">Name: {buyer_email.slice(0,5).toUpperCase()}</p>
-              <p className="mt-2 text-sm  text-gray-600 ">
+              <p className="mt-2 text-sm text-gray-600 ">
+                Name: {buyer_email.slice(0, 5).toUpperCase()}
+              </p>
+              <p className="mt-2 text-sm text-gray-600 ">
                 Email: {buyer_email}
               </p>
             </div>
@@ -51,13 +99,14 @@ const JobDetails = () => {
           </p>
         </div>
       </div>
+
       {/* Place A Bid Form */}
-      <section className="p-6 w-full  bg-white rounded-md shadow-md flex-1 md:min-h-[350px]">
+      <section className="p-6 w-full bg-white rounded-md shadow-md flex-1 md:min-h-[350px]">
         <h2 className="text-lg font-semibold text-gray-700 capitalize ">
           Place A Bid
         </h2>
 
-        <form>
+        <form onSubmit={handleFormSunmit}>
           <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
               <label className="text-gray-700 " htmlFor="price">
@@ -100,6 +149,11 @@ const JobDetails = () => {
               <label className="text-gray-700">Deadline</label>
 
               {/* Date Picker Input Field */}
+              <DatePicker
+                className="bg-white text-gray-700 px-6 py-2 border border-gray-300 rounded-md w-full"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
             </div>
           </div>
 
@@ -113,6 +167,45 @@ const JobDetails = () => {
           </div>
         </form>
       </section>
+
+      {/* Success Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-[350px] h-[300px] text-center border-2 border-green-600">
+            {/* Success Icon with rounded border */}
+            <div className="flex justify-center mb-4">
+              <div className="w-20 h-20 flex items-center justify-center rounded-full border-4 border-green-600">
+                <svg
+                  className="w-10 h-10 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Text */}
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              Your job data added successfully!
+            </h2>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
