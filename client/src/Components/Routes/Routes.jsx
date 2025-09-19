@@ -5,6 +5,7 @@ import SignIn from "../../Pages/SignIn/SignIn";
 import SignUp from "../../Pages/SignUp/SignUp";
 import AuthLayout from "../LayOut/AuthLayout";
 import HomeLayout from "../LayOut/HomeLayout";
+import JobDetails from "../../Pages/JobDetails/JobDetails";
 
 
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
      {
           path:"/",
           element:<Home/>,
+     },
+     {
+          path:"/jobDetails/:id",
+          element:<JobDetails/>,
      },
      
     ]
