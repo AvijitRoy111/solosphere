@@ -19,7 +19,7 @@ const JobCard = ({job}) => {
         </h1>
 
         <p className="mt-2 text-sm text-gray-600 ">
-          {description}
+          {description.slice(0, 150)}
         </p>
         <p className="mt-2 text-sm font-bold text-gray-600 ">
           Range: ${min_price} - ${max_price}
