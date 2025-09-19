@@ -1,6 +1,6 @@
 import { useTheme } from "../hooks/useTheme";
 import { Sun, Moon } from "lucide-react";
-
+import logo from "../../assets/images/logo.png"
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
 
@@ -8,7 +8,7 @@ const Navbar = () => {
     <div className="w-full navbar bg-background dark:bg-background shadow-sm  border-b-2 border-b-gray-300 px-4 md:px-12 lg:px-20 mb-2">
       <div className="flex-1">
         <div className="flex gap-2 items-center">
-          <img className="w-auto h-7" src="" alt="" />
+          <img className="w-auto h-7" src={logo} alt="" />
           <span className="font-bold">SoloSphere</span>
         </div>
       </div>
