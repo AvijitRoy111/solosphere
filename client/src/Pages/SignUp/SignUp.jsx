@@ -1,41 +1,48 @@
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, User } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
-     const [showPassword, setShowPassword] = useState(false);
-     const {signInWithGoogle, signIn} =useContext(AuthContext);
-     const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  const { signInWithGoogle, createUser, updateUserProfile, setUser } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
 
+  // sign in with google.............
+  const handleSignInWithGoogle = async () => {
+    try {
+      await signInWithGoogle();
+      toast.success("User SignIn Successfull");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-     // sign in with google.............
-     const handleSignInWithGoogle = async() =>{
-          try{
-               await signInWithGoogle();
-               toast.success("User SignIn Successfull")
-               navigate('/')
-          }
-          catch(error){
-               toast.error(error.message)
-          }
+  // sign in with google and password........
+  const signInWithEmailAndPassword = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photoUrl = form.photoURL.value;
+    const password = form.password.value;
+    console.log(name, email, photoUrl, password);
 
-     }
-
-       // sign in with google and password........
-     const signInWithEmailAndPassword = e =>{
-          e.preventDefault()
-          const form = e.target;
-          const name = form.name.value;
-          const email = form.email.value;
-          const photoUrl = form.photoURL.value;
-          const password = form.password.value;
-          console.log(name, email, photoUrl, password)
-
-     }
-
-
-
+    try {
+      // create user ..........
+      const result = await createUser(email, password);
+      console.log(result);
+      await updateUserProfile(name, photoUrl);
+      setUser({ ...User, photoUrl: photoUrl, displayName: name });
+      navigate("/");
+      toast.success("User Create Successfull");
+    } catch (error) {
+      toast.error(error?.message);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center py-12 px-4 md:px-6 transition-colors duration-300">
@@ -53,7 +60,10 @@ const SignUp = () => {
             Get Your Free Account Now.
           </p>
 
-          <div onClick={handleSignInWithGoogle} className="flex cursor-pointer items-center justify-center mt-4 hover:text-black text-white transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 ">
+          <div
+            onClick={handleSignInWithGoogle}
+            className="flex cursor-pointer items-center justify-center mt-4 hover:text-black text-white transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 "
+          >
             <div className="px-4 py-2">
               <svg className="w-6 h-6" viewBox="0 0 40 40">
                 <path
@@ -132,9 +142,7 @@ const SignUp = () => {
                 placeholder="Email"
                 name="email"
                 className="block w-full px-4 py-2 text-black bg-gray-300 rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
-                
               />
-              
             </div>
 
             <div className="mt-4 relative">
@@ -150,20 +158,21 @@ const SignUp = () => {
               <input
                 id="loggingPassword"
                 placeholder="Password"
-                type={showPassword ? "password"  : "text"}
+                type={showPassword ? "password" : "text"}
                 name="password"
                 className="block w-full px-4 py-2 text-black bg-gray-300 rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               />
-              <span className="absolute bottom-2 right-3" onClick={() =>{setShowPassword(!showPassword)}}>
-               {
-                    showPassword ? <EyeOff />: <Eye />
-               }
+              <span
+                className="absolute bottom-2 right-3"
+                onClick={() => {
+                  setShowPassword(!showPassword);
+                }}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
               </span>
             </div>
             <div className="mt-6">
-              <button
-                className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-700 rounded-lg hover:bg-gray-900 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-              >
+              <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-700 rounded-lg hover:bg-gray-900 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                 Sign Up
               </button>
             </div>
