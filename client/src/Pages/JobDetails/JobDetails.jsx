@@ -4,6 +4,7 @@ import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const JobDetails = () => {
   const { user } = useContext(AuthContext);
@@ -26,11 +27,38 @@ const JobDetails = () => {
     e.preventDefault();
     const form = e.target;
     const jobId = _id;
-    const price = form.price.value;
+    const price = parseFloat(form.price.value);
     const email = form.email.value;
     const description = form.comment.value;
     const deadline = startDate;
     const status = "pending";
+
+    // Validation .................
+    // validation
+    if (isNaN(price) || price <= 0) {
+      toast.error("Please enter a valid price!");
+      return;
+    }
+
+    if (price < min_price) {
+      toast.error(`Price must be at least ${min_price}`);
+      return;
+    }
+
+    if (price > max_price) {
+      toast.error(`Price cannot be more than ${max_price}`);
+      return;
+    }
+
+    if (!email) {
+      toast.error("Email is required!");
+      return;
+    }
+
+    if (user?.email === buyer_email) {
+      toast.error("You cannot bid on your own job!");
+      return;
+    }
 
     const bidData = {
       jobId,
@@ -91,7 +119,7 @@ const JobDetails = () => {
               </p>
             </div>
             <div className="rounded-full object-cover overflow-hidden w-14 h-14">
-              <img src="" alt="" />
+              <img src={user?.photoURL} alt="" />
             </div>
           </div>
           <p className="mt-6 text-lg font-bold text-gray-600 ">
@@ -114,7 +142,7 @@ const JobDetails = () => {
               </label>
               <input
                 id="price"
-                type="text"
+                type="number"
                 name="price"
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md   focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
               />
@@ -128,7 +156,7 @@ const JobDetails = () => {
                 id="emailAddress"
                 type="email"
                 name="email"
-                disabled
+                readOnly
                 defaultValue={user?.email}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md   focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
               />
