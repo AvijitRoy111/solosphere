@@ -85,9 +85,9 @@ const Navbar = () => {
 
               <ul className="menu menu-sm dropdown-content mt-3 -mr-10 z-[1] p-2 shadow-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-box w-52 transition-colors duration-300 ">
                 <li>
-                  <div className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
+                  <Link to="/add-job" className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
                     Add Job
-                  </div>
+                  </Link>
                 </li>
                 <li>
                   <div className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">

@@ -33,8 +33,7 @@ const JobDetails = () => {
     const deadline = startDate;
     const status = "pending";
 
-    // Validation .................
-    // validation
+    // Validation ...............
     if (isNaN(price) || price <= 0) {
       toast.error("Please enter a valid price!");
       return;
@@ -73,12 +72,9 @@ const JobDetails = () => {
     };
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_api}/bids`,
-        bidData
-      );
+      const { data } = await axios.post(`${import.meta.env.VITE_api}/bids`, bidData);
       if (data.insertedId) {
-        setIsModalOpen(true); // modal show
+        setIsModalOpen(true); 
       }
     } catch (error) {
       console.log(error.message);
