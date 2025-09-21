@@ -1,4 +1,9 @@
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 const AddJob = () => {
+  const [startDate, setStartDate] = useState(new Date());
+
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] my-12">
       <section className=" p-2 md:p-6 mx-auto bg-white rounded-md shadow-md ">
@@ -36,6 +41,11 @@ const AddJob = () => {
               <label className="text-gray-700">Deadline</label>
 
               {/* Date Picker Input Field */}
+              <DatePicker
+                className="bg-white text-gray-700 px-6 py-2 border border-gray-300 rounded-md w-full"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
             </div>
 
             <div className="flex flex-col gap-2 ">
