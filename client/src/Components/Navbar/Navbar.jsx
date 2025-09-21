@@ -90,14 +90,14 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <div className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
+                  <Link to="/my-posted-job" className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
                     My Posted Jobs
-                  </div>
+                  </Link>
                 </li>
                 <li>
-                  <div className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
+                  <Link to="/my-bids" className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
                     My Bids
-                  </div>
+                  </Link>
                 </li>
                 <li>
                   <div className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">

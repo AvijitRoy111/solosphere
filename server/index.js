@@ -41,15 +41,18 @@ async function run() {
 
      // show jobs from mongodb..
      app.get('/jobs', async(req, res) =>{
-          try {
-    const query = jodsCollection.find();   // ✅ correct name
-    const result = await query.toArray();
-    res.send(result);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: "Failed to fetch jobs" });
-  }
+      const query = jodsCollection.find(); 
+      const result = await query.toArray();
+      res.send(result);
      })
+
+    //  show my posted jobs ....
+    app.get('/jobs/:email', async(req, res) =>{
+      const email = req.params.email;
+      const query = {'buyer.email' : email}
+      const result = await jodsCollection.find(query).toArray()
+      res.send(result)
+    })
 
      // show single job from mongodb..
      app.get('/job/:id', async(req, res) =>{
