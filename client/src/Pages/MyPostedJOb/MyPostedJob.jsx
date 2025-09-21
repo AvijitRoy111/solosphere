@@ -19,7 +19,7 @@ const MyPostedJob = () => {
         <h2 className="text-lg font-medium text-gray-800 ">My Posted Jobs</h2>
 
         <span className="px-3 py-1 font-bold text-xs text-blue-600 bg-blue-100 rounded-full ">
-          0 {jobs.length}
+          0 {jobs.length} Jobs
         </span>
       </div>
 

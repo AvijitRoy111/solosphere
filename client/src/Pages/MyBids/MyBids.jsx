@@ -1,11 +1,27 @@
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import axios from "axios";
+
 const MyBids = () => {
+  const { user } = useContext(AuthContext);
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_api}/bids/${user?.email}`
+      );
+      setJobs(data);
+    };
+    getData();
+  }, [user]);
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">My Posted Jobs</h2>
 
-        <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">
-          05 Jobs
+        <span className="font-bold px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">
+          0 {jobs.length} Jobs
         </span>
       </div>
 
@@ -60,17 +76,18 @@ const MyBids = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 ">
-                  <tr>
+                 {
+                  jobs.map((job) => <tr key={job._id}>
                     <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
-                      Build Dynamic Website
+                      {job.job_title}
                     </td>
 
                     <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
-                      10/04/2024
+                      {new Date(job.deadline).toLocaleDateString()}
                     </td>
 
                     <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
-                      $100-$200
+                      ${job.min_price}-${job.max_price}
                     </td>
                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                       <div className="flex items-center gap-x-2">
@@ -78,7 +95,7 @@ const MyBids = () => {
                           className="px-3 py-1 rounded-full text-blue-500 bg-blue-100/60
                            text-xs"
                         >
-                          Web Development
+                          {job.catagory}
                         </p>
                       </div>
                     </td>
@@ -86,7 +103,7 @@ const MyBids = () => {
                       title=""
                       className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap"
                     >
-                      Lorem ipsum, dolor si adipisicing elit. Ex, provident?..
+                      {job.description.slice(0,50)}
                     </td>
                     <td className="px-4 py-4 text-sm whitespace-nowrap">
                       <div className="flex items-center gap-x-6">
@@ -125,7 +142,8 @@ const MyBids = () => {
                         </button>
                       </div>
                     </td>
-                  </tr>
+                  </tr>)
+                 }
                 </tbody>
               </table>
             </div>

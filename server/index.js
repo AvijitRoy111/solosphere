@@ -71,6 +71,13 @@ async function run() {
           res.send(result)
      })
 
+     // show my bids data in mongodb..
+     app.get('/bids/:email', async(req, res) =>{
+      const email = req.params.email;
+      const query = {email : email}
+      const result = await bidsCollection.find(query).toArray()
+      res.send(result)
+    })
      
      // post a job data in mongodb..
      app.post('/jobs', async(req, res) =>{
