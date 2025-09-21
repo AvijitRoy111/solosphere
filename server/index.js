@@ -63,6 +63,14 @@ async function run() {
           res.send(result)
      })
 
+     
+     // post a job data in mongodb..
+     app.post('/job', async(req, res) =>{
+          const jobData = req.body;
+          const result= await bidsCollection.insertOne(jobData);
+          res.send(result)
+     })
+
 
 
     // Send a ping to confirm a successful connection
