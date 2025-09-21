@@ -69,7 +69,7 @@ const TabCatagory = () => {
           <TabPanel>
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {jobs
-                .filter((j) => j.catagory.toLowerCase() === "Graphic Design".toLowerCase())
+                .filter((j) => j.catagory.toLowerCase() === "Graphics Design".toLowerCase())
                 .map((job) => (
                   <div key={job._id} className="flex justify-center w-full">
                     <JobCard job={job} className="w-full md:w-auto" />

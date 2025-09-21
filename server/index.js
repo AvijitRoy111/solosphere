@@ -41,9 +41,14 @@ async function run() {
 
      // show jobs from mongodb..
      app.get('/jobs', async(req, res) =>{
-          const query = jodsCollection.find()
-          const result = await query.toArray()
-          res.send(result)
+          try {
+    const query = jodsCollection.find();   // ✅ correct name
+    const result = await query.toArray();
+    res.send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Failed to fetch jobs" });
+  }
      })
 
      // show single job from mongodb..
@@ -65,9 +70,9 @@ async function run() {
 
      
      // post a job data in mongodb..
-     app.post('/job', async(req, res) =>{
+     app.post('/jobs', async(req, res) =>{
           const jobData = req.body;
-          const result= await bidsCollection.insertOne(jobData);
+          const result= await jodsCollection.insertOne(jobData);
           res.send(result)
      })
 

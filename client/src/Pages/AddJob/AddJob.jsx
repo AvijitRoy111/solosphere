@@ -2,10 +2,54 @@ import { useContext, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddJob = () => {
-     const {user} =useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const [startDate, setStartDate] = useState(new Date());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleJobSunmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const job_title = form.job_title.value;
+    const email = form.email.value;
+    const deadline = startDate;
+    const min_price = parseFloat(form.min_price.value);
+    const max_price = parseFloat(form.max_price.value);
+    const description = form.description.value;
+    const catagory = form.category.value;
+    const status = "pending";
+
+    const jobData = {
+      job_title,
+      deadline,
+      min_price,
+      max_price,
+      description,
+      catagory,
+      status,
+      buyer: {
+        email,
+        name: user?.displayName,
+        photo: user?.photoURL,
+      },
+    };
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_api}/jobs`,
+        jobData
+      );
+      if (data.insertedId) {
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="w-full flex justify-center items-center min-h-[calc(100vh-306px)] my-12">
@@ -14,7 +58,7 @@ const AddJob = () => {
           Post a Job
         </h2>
 
-        <form>
+        <form onSubmit={handleJobSunmit}>
           <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
               <label className="text-gray-700 " htmlFor="job_title">
@@ -106,6 +150,48 @@ const AddJob = () => {
           </div>
         </form>
       </section>
+
+      {/* Success Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-[350px] h-[300px] text-center border-2 border-green-600">
+            {/* Success Icon with rounded border */}
+            <div className="flex justify-center mb-4">
+              <div className="w-20 h-20 flex items-center justify-center rounded-full border-4 border-green-600">
+                <svg
+                  className="w-10 h-10 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            {/* Text */}
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              Your job data added successfully!
+            </h2>
+
+            {/* Close Button */}
+            <button
+              onClick={() => {
+                setIsModalOpen(false);
+                navigate("/my-posted-job"); 
+              }}
+              className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -14,7 +14,7 @@ const JobDetails = () => {
 
   const {
     _id,
-    buyer_email,
+    buyer,
     job_title,
     catagory,
     deadline,
@@ -54,7 +54,7 @@ const JobDetails = () => {
       return;
     }
 
-    if (user?.email === buyer_email) {
+    if (user?.email === buyer?.email) {
       toast.error("You cannot bid on your own job!");
       return;
     }
@@ -65,7 +65,9 @@ const JobDetails = () => {
       email,
       description,
       job_title,
-      buyer_email,
+      buyer:{
+        buyer_email:buyer?.email
+      },
       catagory,
       deadline,
       status,
@@ -108,14 +110,14 @@ const JobDetails = () => {
           <div className="flex items-center gap-5">
             <div>
               <p className="mt-2 text-sm text-gray-600 ">
-                Name: {buyer_email.slice(0, 5).toUpperCase()}
+                Name: {buyer?.name.slice(0, 5).toUpperCase()}
               </p>
               <p className="mt-2 text-sm text-gray-600 ">
-                Email: {buyer_email}
+                Email: {buyer?.email}
               </p>
             </div>
             <div className="rounded-full object-cover overflow-hidden w-14 h-14">
-              <img src={user?.photoURL} alt="" />
+              <img src={buyer?.photoURL} alt="" />
             </div>
           </div>
           <p className="mt-6 text-lg font-bold text-gray-600 ">
