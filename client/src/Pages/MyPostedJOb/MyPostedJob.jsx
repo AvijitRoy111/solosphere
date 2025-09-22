@@ -30,7 +30,6 @@ const MyPostedJob = () => {
       );
 
       if (data.deletedCount > 0) {
-        // UI থেকে remove করা হচ্ছে
         setJobs((prev) => prev.filter((job) => job._id !== selectedId));
         setShowConfirm(false);
         setShowSuccess(true);

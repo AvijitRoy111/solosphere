@@ -1,12 +1,23 @@
+import { useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 
 const UpdateJob = () => {
-     const updateJobs = useLoaderData()
-     const {} =updateJobs;
+  const updateJobs = useLoaderData();
+  const [startDate, setStartDate] = useState(new Date());
+  const {user} = useContext(AuthContext)
+
+  const { job_title, deadline, min_price, max_price, description, catagory } =
+    updateJobs;
+
+
+
   return (
     <div className="w-full flex justify-center items-center min-h-[calc(100vh-306px)] my-12">
       <section className=" p-2 md:p-6 mx-auto bg-white rounded-md shadow-2xl ">
-        <h2 className="text-lg font-semibold text-gray-700 capitalize ">
+        <h2 className="text-lg text-center font-bold text-gray-700 capitalize pb-6">
           Update a Job
         </h2>
 
@@ -20,6 +31,7 @@ const UpdateJob = () => {
                 id="job_title"
                 name="job_title"
                 type="text"
+                defaultValue={job_title}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
               />
             </div>
@@ -32,14 +44,20 @@ const UpdateJob = () => {
                 id="emailAddress"
                 type="email"
                 name="email"
-                disabled
+                defaultValue={user?.email}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
               />
             </div>
             <div className="flex flex-col gap-2 ">
               <label className="text-gray-700">Deadline</label>
 
-              {/* Date picker input field */}
+              {/* Date Picker Input Field */}
+              <DatePicker
+                className="bg-white text-gray-700 px-6 py-2 border border-gray-300 rounded-md w-full"
+                selected={startDate}
+                defaultValue={deadline}
+                onChange={(date) => setStartDate(date)}
+              />
             </div>
 
             <div className="flex flex-col gap-2 ">
@@ -49,6 +67,7 @@ const UpdateJob = () => {
               <select
                 name="category"
                 id="category"
+                defaultValue={catagory}
                 className="bg-gray-50 border p-2 rounded-md"
               >
                 <option value="Web Development">Web Development</option>
@@ -63,6 +82,7 @@ const UpdateJob = () => {
               <input
                 id="min_price"
                 name="min_price"
+                defaultValue={min_price}
                 type="number"
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
               />
@@ -75,6 +95,7 @@ const UpdateJob = () => {
               <input
                 id="max_price"
                 name="max_price"
+                defaultValue={max_price}
                 type="number"
                 className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
               />
@@ -88,6 +109,7 @@ const UpdateJob = () => {
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
               name="description"
               id="description"
+              defaultValue={description}
               cols="30"
             ></textarea>
           </div>
