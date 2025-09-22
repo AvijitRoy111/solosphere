@@ -103,9 +103,18 @@ async function run() {
      })
 
      // show my bids data in mongodb..
-     app.get('/bids/:email', async(req, res) =>{
+     app.get('/my-bids/:email', async(req, res) =>{
       const email = req.params.email;
       const query = {email : email}
+      const result = await bidsCollection.find(query).toArray()
+      res.send(result)
+    })
+
+
+     // show bids request data in mongodb..
+     app.get('/bids-request/:email', async(req, res) =>{
+      const email = req.params.email;
+      const query = {'buyer.email' : email}
       const result = await bidsCollection.find(query).toArray()
       res.send(result)
     })
