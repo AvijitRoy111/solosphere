@@ -34,14 +34,14 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     //await client.connect();
-     const jodsCollection = client.db('solosphere').collection('jobs') 
+     const jobsCollection = client.db('solosphere').collection('jobs') 
      const bidsCollection = client.db('solosphere').collection('bids') 
 
 
 
      // show jobs from mongodb..
      app.get('/jobs', async(req, res) =>{
-      const query = jodsCollection.find(); 
+      const query = jobsCollection.find(); 
       const result = await query.toArray();
       res.send(result);
      })
@@ -50,7 +50,7 @@ async function run() {
     app.get('/jobs/:email', async(req, res) =>{
       const email = req.params.email;
       const query = {'buyer.email' : email}
-      const result = await jodsCollection.find(query).toArray()
+      const result = await jobsCollection.find(query).toArray()
       res.send(result)
     })
 
@@ -58,9 +58,26 @@ async function run() {
      app.get('/job/:id', async(req, res) =>{
           const id = req.params.id;
           const query = {_id : new ObjectId(id)};
-          const result = await jodsCollection.findOne(query);
+          const result = await jobsCollection.findOne(query);
           res.send(result)
      })
+
+
+     // post a job data in mongodb..
+     app.post('/jobs', async(req, res) =>{
+          const jobData = req.body;
+          const result= await jobsCollection.insertOne(jobData);
+          res.send(result)
+     })
+
+    //delete one  my posted jobs ....
+    app.delete('/jobs/:id', async(req, res) =>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await jobsCollection.deleteOne(query)
+      res.send(result)
+    })
+
 
 
 
@@ -78,14 +95,7 @@ async function run() {
       const result = await bidsCollection.find(query).toArray()
       res.send(result)
     })
-     
-     // post a job data in mongodb..
-     app.post('/jobs', async(req, res) =>{
-          const jobData = req.body;
-          const result= await jodsCollection.insertOne(jobData);
-          res.send(result)
-     })
-
+    
 
 
     // Send a ping to confirm a successful connection

@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       element:<MyPostedJob/>
      },
      {
-      path:"/my-bids",
+      path:" ",
       errorElement:<Error></Error>,
       element:<MyBids/>
      },
