@@ -118,9 +118,12 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <div className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
+                  <Link
+                    to="/bids-request"
+                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+                  >
                     Bid Requests
-                  </div>
+                  </Link>
                 </li>
                 <li className="mt-2 w-full flex items-center justify-center">
                   <button
