@@ -13,65 +13,80 @@ import MyBids from "../../Pages/MyBids/MyBids";
 import UpdateJob from "../../Pages/UpdateJob/UpdateJob";
 import PrivateRoutes from "./PrivateRoutes";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement:<Error></Error>,
-    element: <HomeLayout/>,
-    children:[
-     {
-          path:"/",
-          errorElement:<Error></Error>,
-          element:<Home/>,
-     },
-     {
-          path:"/jobDetails/:id",
-          errorElement:<Error></Error>,
-          element:<JobDetails/>,
-          loader:({params}) =>fetch(`${import.meta.env.VITE_api}/job/${params.id}`)
-     },
-     {
-          path:"/updateJob/:id",
-          errorElement:<Error></Error>,
-          element:<UpdateJob/>,
-          loader:({params}) =>fetch(`${import.meta.env.VITE_api}/job/${params.id}`)
-     },
-     {
-      path:"/add-job",
-      errorElement:<Error></Error>,
-      element:<PrivateRoutes><AddJob/></PrivateRoutes>
-     },
-     {
-      path:"/my-posted-job",
-      errorElement:<Error></Error>,
-      element:<MyPostedJob/>
-     },
-     {
-      path:" ",
-      errorElement:<Error></Error>,
-      element:<MyBids/>
-     },
-     
-    ]
+    errorElement: <Error></Error>,
+    element: <HomeLayout />,
+    children: [
+      {
+        path: "/",
+        errorElement: <Error></Error>,
+        element: <Home />,
+      },
+      {
+        path: "/jobDetails/:id",
+        errorElement: <Error></Error>,
+        element: (
+          <PrivateRoutes>
+            <JobDetails />
+          </PrivateRoutes>
+        ),
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_api}/job/${params.id}`),
+      },
+      {
+        path: "/updateJob/:id",
+        errorElement: <Error></Error>,
+        element: (
+          <PrivateRoutes>
+            <UpdateJob />
+          </PrivateRoutes>
+        ),
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_api}/job/${params.id}`),
+      },
+      {
+        path: "/add-job",
+        errorElement: <Error></Error>,
+        element: (
+          <PrivateRoutes>
+            <AddJob />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "/my-posted-job",
+        errorElement: <Error></Error>,
+        element: (
+          <PrivateRoutes>
+            <MyPostedJob />
+          </PrivateRoutes>
+        ),
+      },
+      {
+        path: "my-bids",
+        element: <MyBids />,
+      },
+    ],
   },
   {
-     path:"/",
-     errorElement:<Error></Error>,
-     element:<AuthLayout/>,
-     children:[
-          {
-            path:"/signIn",
-            errorElement:<Error></Error>,
-            element:<SignIn/>
-          },
-          {
-            path:"/signUp",
-            errorElement:<Error></Error>,
-            element:<SignUp/>
-          },
-     ]
-  }
+    path: "/",
+    errorElement: <Error></Error>,
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/signIn",
+        errorElement: <Error></Error>,
+        element: <SignIn />,
+      },
+      {
+        path: "/signUp",
+        errorElement: <Error></Error>,
+        element: <SignUp />,
+      },
+    ],
+  },
 ]);
 
 export default router;
