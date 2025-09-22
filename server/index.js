@@ -77,6 +77,20 @@ async function run() {
       const result = await jobsCollection.deleteOne(query)
       res.send(result)
     })
+    // update data my posted jobs.....
+    app.put('/jobs/:id', async(req, res) =>{
+      const id = req.params.id;
+      const jobData = req.body;
+      const query = {_id : new ObjectId(id)}
+      const opitons = {upsert : true}
+      const updateData ={
+        $set: {
+          ...jobData,
+        }
+      }
+      const result = await jobsCollection.updateOne(query, updateData, opitons)
+      res.send(result)
+    })
 
 
 
