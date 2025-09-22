@@ -1,6 +1,6 @@
 import { Eye, EyeOff, User } from "lucide-react";
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
 
@@ -8,6 +8,8 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { signInWithGoogle, createUser, updateUserProfile, setUser } =
     useContext(AuthContext);
+  const location = useLocation();
+  const from = location.state || "/";
   const navigate = useNavigate();
 
   // sign in with google.............
@@ -15,7 +17,7 @@ const SignUp = () => {
     try {
       await signInWithGoogle();
       toast.success("User SignIn Successfull");
-      navigate("/");
+      navigate(from);
     } catch (error) {
       toast.error(error.message);
     }
@@ -37,7 +39,7 @@ const SignUp = () => {
       console.log(result);
       await updateUserProfile(name, photoUrl);
       setUser({ ...User, photoUrl: photoUrl, displayName: name });
-      navigate("/");
+      navigate(from);
       toast.success("User Create Successfull");
     } catch (error) {
       toast.error(error?.message);

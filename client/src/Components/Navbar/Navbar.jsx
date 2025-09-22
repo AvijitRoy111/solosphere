@@ -3,12 +3,21 @@ import { Sun, Moon } from "lucide-react";
 import logo from "../../assets/images/logo.png";
 import { useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   return (
     <div className="w-full navbar bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-12 lg:px-20 transition-colors duration-300">
@@ -68,7 +77,7 @@ const Navbar = () => {
         {user && (
           <>
             {/* Avatar dropdown */}
-            <div  className="dropdown dropdown-end z-50">
+            <div className="dropdown dropdown-end z-50">
               <div
                 tabIndex={0}
                 role="button"
@@ -85,17 +94,26 @@ const Navbar = () => {
 
               <ul className="menu menu-sm dropdown-content mt-3 -mr-10 z-[1] p-2 shadow-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-box w-52 transition-colors duration-300 ">
                 <li>
-                  <Link to="/add-job" className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
+                  <Link
+                    to="/add-job"
+                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+                  >
                     Add Job
                   </Link>
                 </li>
                 <li>
-                  <Link to="/my-posted-job" className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
+                  <Link
+                    to="/my-posted-job"
+                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+                  >
                     My Posted Jobs
                   </Link>
                 </li>
                 <li>
-                  <Link to="/my-bids" className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200">
+                  <Link
+                    to="/my-bids"
+                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+                  >
                     My Bids
                   </Link>
                 </li>
@@ -105,7 +123,10 @@ const Navbar = () => {
                   </div>
                 </li>
                 <li className="mt-2 w-full flex items-center justify-center">
-                  <button onClick={logOut} className="w-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 rounded hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white text-center transition-colors duration-200">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 rounded hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white text-center transition-colors duration-200"
+                  >
                     Logout
                   </button>
                 </li>

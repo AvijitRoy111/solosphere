@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 const SignIn = () => {
      const [showPassword, setShowPassword] = useState(false);
      const {signInWithGoogle, signIn} =useContext(AuthContext);
+     const location = useLocation()
+     const from = location.state || '/'
      const navigate = useNavigate()
 
 
@@ -35,7 +37,7 @@ const SignIn = () => {
           try{
                const result = await signIn(email, password)
                console.log(result)
-               navigate('/')
+               navigate(from)
                toast.success("User SignIn Successfull")
           }
           catch(error){
