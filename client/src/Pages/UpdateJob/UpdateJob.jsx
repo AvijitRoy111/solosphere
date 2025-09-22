@@ -1,7 +1,11 @@
+import { useLoaderData } from "react-router-dom";
+
 const UpdateJob = () => {
+     const updateJobs = useLoaderData()
+     const {} =updateJobs;
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-306px)] my-12">
-      <section className=" p-2 md:p-6 mx-auto bg-white rounded-md shadow-md ">
+    <div className="w-full flex justify-center items-center min-h-[calc(100vh-306px)] my-12">
+      <section className=" p-2 md:p-6 mx-auto bg-white rounded-md shadow-2xl ">
         <h2 className="text-lg font-semibold text-gray-700 capitalize ">
           Update a Job
         </h2>
@@ -45,7 +49,7 @@ const UpdateJob = () => {
               <select
                 name="category"
                 id="category"
-                className="border p-2 rounded-md"
+                className="bg-gray-50 border p-2 rounded-md"
               >
                 <option value="Web Development">Web Development</option>
                 <option value="Graphics Design">Graphics Design</option>
@@ -89,7 +93,7 @@ const UpdateJob = () => {
           </div>
           <div className="flex justify-end mt-6">
             <button className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transhtmlForm bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
-              Save
+              Update
             </button>
           </div>
         </form>

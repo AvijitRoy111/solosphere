@@ -10,6 +10,7 @@ import Error from "../../Pages/ErrorPage/Error";
 import AddJob from "../../Pages/AddJob/AddJob";
 import MyPostedJob from "../../Pages/MyPostedJOb/MyPostedJob";
 import MyBids from "../../Pages/MyBids/MyBids";
+import UpdateJob from "../../Pages/UpdateJob/UpdateJob";
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,12 @@ const router = createBrowserRouter([
           path:"/jobDetails/:id",
           errorElement:<Error></Error>,
           element:<JobDetails/>,
+          loader:({params}) =>fetch(`${import.meta.env.VITE_api}/job/${params.id}`)
+     },
+     {
+          path:"/updateJob/:id",
+          errorElement:<Error></Error>,
+          element:<UpdateJob/>,
           loader:({params}) =>fetch(`${import.meta.env.VITE_api}/job/${params.id}`)
      },
      {
