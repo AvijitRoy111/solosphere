@@ -5,7 +5,7 @@ import axios from "axios";
 const MyBids = () => {
   const { user } = useContext(AuthContext);
   const [bids, setBids] = useState([]);
-
+  const [modal, setModal] = useState(null); 
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios.get(
@@ -15,6 +15,41 @@ const MyBids = () => {
     };
     getData();
   }, [user]);
+
+  // ✅ Handle Complete Action
+  const handleComplete = async (bid) => {
+    if (bid.status !== "In Progress") return; 
+
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_api}/bids/${bid._id}`,
+        { status: "Complete" }
+      );
+
+      if (data.modifiedCount > 0) {
+        setModal({
+          type: "success",
+          message: "Your bid has been marked as Complete 🎉",
+          bidId: bid._id,
+        });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // ✅ Close Modal and Update UI
+  const closeModal = () => {
+    if (modal?.type === "success") {
+      setBids((prev) =>
+        prev.map((bid) =>
+          bid._id === modal.bidId ? { ...bid, status: "Complete" } : bid
+        )
+      );
+    }
+    setModal(null);
+  };
+
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
@@ -28,108 +63,88 @@ const MyBids = () => {
       <div className="flex flex-col mt-6">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden border border-gray-200  md:rounded-lg">
+            <div className="overflow-hidden border border-gray-200 md:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500"
-                    >
-                      <div className="flex items-center gap-x-3">
-                        <span>Title</span>
-                      </div>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">Title</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
+                      Deadline
                     </th>
-
-                    <th
-                      scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
-                    >
-                      <span>Deadline</span>
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
-                    >
-                      <button className="flex items-center gap-x-2">
-                        <span>Price</span>
-                      </button>
-                    </th>
-
-                    <th
-                      scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
-                    >
+                    <th className="py-3.5 px-4 text-sm text-gray-500">Price</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
                       Category
                     </th>
-
-                    <th
-                      scope="col"
-                      className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500"
-                    >
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
                       Status
                     </th>
-
-                    <th className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500">
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200 ">
+                <tbody className="bg-white divide-y divide-gray-200">
                   {bids.map((bid) => (
                     <tr key={bid._id}>
-                      <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
+                      <td className="px-4 py-4 text-sm text-gray-500">
                         {bid.job_title}
                       </td>
-
-                      <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
+                      <td className="px-4 py-4 text-sm text-gray-500">
                         {new Date(bid.deadline).toLocaleDateString()}
                       </td>
-
-                      <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
+                      <td className="px-4 py-4 text-sm text-gray-500">
                         ${bid.price}
                       </td>
-                      <td className="px-4 py-4 text-sm whitespace-nowrap">
-                        <div className="flex items-center gap-x-2">
-                          <p
-                            className="px-3 py-1 rounded-full text-blue-500 bg-blue-100/60
-                           text-xs"
-                          >
-                            {bid.catagory}
-                          </p>
-                        </div>
+                      <td className="px-4 py-4 text-sm">
+                        <p className="px-3 py-1 rounded-full text-blue-500 bg-blue-100/60 text-xs">
+                          {bid.catagory}
+                        </p>
                       </td>
-                      <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                        <td className="px-4 py-4 text-sm font-medium">
-                          {bid.status === "In Progress" ? (
-                            <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-blue-100/60 text-blue-500">
-                              <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                              <h2 className="text-sm font-normal">
-                                {bid.status}
-                              </h2>
-                            </div>
-                          ) : bid.status === "Rejected" ? (
-                            <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-red-100/60 text-red-500">
-                              <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
-                              <h2 className="text-sm font-normal">
-                                {bid.status}
-                              </h2>
-                            </div>
-                          ) : (
-                            <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
-                              <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
-                              <h2 className="text-sm font-normal">
-                                {bid.status}
-                              </h2>
-                            </div>
-                          )}
-                        </td>
+
+                      {/* ✅ Status badge */}
+                      <td className="px-4 py-4 text-sm font-medium">
+                        {bid.status === "In Progress" ? (
+                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-blue-100/60 text-blue-500">
+                            <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                            <h2 className="text-sm font-normal">
+                              {bid.status}
+                            </h2>
+                          </div>
+                        ) : bid.status === "Rejected" ? (
+                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-red-100/60 text-red-500">
+                            <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                            <h2 className="text-sm font-normal">
+                              {bid.status}
+                            </h2>
+                          </div>
+                        ) : bid.status === "Complete" ? (
+                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-green-100/60 text-green-500">
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                            <h2 className="text-sm font-normal">
+                              {bid.status}
+                            </h2>
+                          </div>
+                        ) : (
+                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
+                            <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
+                            <h2 className="text-sm font-normal">
+                              {bid.status}
+                            </h2>
+                          </div>
+                        )}
                       </td>
+
+                      {/* ✅ Action Button */}
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <button
+                          onClick={() => handleComplete(bid)}
                           title="Mark Complete"
-                          className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed"
+                          disabled={bid.status !== "In Progress"}
+                          className={`transition-colors duration-200 focus:outline-none ${
+                            bid.status === "In Progress"
+                              ? "text-gray-500 hover:text-green-600"
+                              : "text-gray-300 cursor-not-allowed"
+                          }`}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -155,6 +170,22 @@ const MyBids = () => {
           </div>
         </div>
       </div>
+
+      {/* ✅ Modal */}
+      {modal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
+            <div className="text-green-500 text-5xl mb-4">✔️</div>
+            <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
+            <button
+              onClick={closeModal}
+              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
