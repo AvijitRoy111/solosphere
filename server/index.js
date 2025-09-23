@@ -77,6 +77,8 @@ async function run() {
       const result = await jobsCollection.deleteOne(query)
       res.send(result)
     })
+
+
     // update data my posted jobs.....
     app.put('/jobs/:id', async(req, res) =>{
       const id = req.params.id;
@@ -93,6 +95,19 @@ async function run() {
     })
 
 
+    // update bid request status ...
+    app.patch('/bids/:id', async(req, res) =>{
+      const id = req.params.id;
+      const status = req.body;
+      const query = {_id : new ObjectId(id)};
+      const updateStatus = {
+        $set:{
+          status
+        }
+      };
+      const result = await bidsCollection.updateOne(query, updateStatus);
+      res.send(result)
+    })
 
 
      // post a bids data in mongodb..
