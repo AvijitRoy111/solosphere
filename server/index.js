@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // ---------- JWT VERIFY MIDDLEWARE ----------
-const verifyToken = (req, res, next) => {
+const verify = (req, res, next) => {
   const token = req.cookies?.token;
   if (!token) {
     return res.status(401).send({ message: "Unauthorized access (No Token)" });
@@ -94,7 +94,7 @@ async function run() {
     // ---------- PRIVATE ROUTES (SECURED) ----------
 
     // 1. My Posted Jobs (only job owner can see)
-    app.get("/jobs/:email", verifyToken, async (req, res) => {
+    app.get("/jobs/:email", verify, async (req, res) => {
       const tokenEmail = req.user.email;
       const email = req.params.email;
       if (tokenEmail !== email) {
@@ -106,7 +106,7 @@ async function run() {
     });
 
     // 2. Post a Job
-    app.post("/jobs", verifyToken, async (req, res) => {
+    app.post("/jobs", verify, async (req, res) => {
       const jobData = req.body;
       if (req.user.email !== jobData?.buyer?.email) {
         return res.status(403).send({ message: "Forbidden access" });
@@ -116,7 +116,7 @@ async function run() {
     });
 
     // 3. Delete My Posted Job
-    app.delete("/jobs/:id", verifyToken, async (req, res) => {
+    app.delete("/jobs/:id", verify, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await jobsCollection.deleteOne(query);
@@ -124,7 +124,7 @@ async function run() {
     });
 
     // 4. Update My Posted Job
-    app.put("/jobs/:id", verifyToken, async (req, res) => {
+    app.put("/jobs/:id", verify, async (req, res) => {
       const id = req.params.id;
       const jobData = req.body;
       const query = { _id: new ObjectId(id) };
@@ -137,7 +137,7 @@ async function run() {
     });
 
     // 5. Place a Bid
-    app.post("/bids", verifyToken, async (req, res) => {
+    app.post("/bids", verify, async (req, res) => {
       const data = req.body;
       if (req.user.email !== data?.email) {
         return res.status(403).send({ message: "Forbidden access" });
@@ -147,7 +147,7 @@ async function run() {
     });
 
     // 6. My Bids
-    app.get("/my-bids/:email", verifyToken, async (req, res) => {
+    app.get("/my-bids/:email", verify, async (req, res) => {
       const tokenEmail = req.user.email;
       const email = req.params.email;
       if (tokenEmail !== email) {
@@ -159,7 +159,7 @@ async function run() {
     });
 
     // 7. Bids Request (jobs owner can see who bid)
-    app.get("/bids-request/:email", verifyToken, async (req, res) => {
+    app.get("/bids-request/:email", verify, async (req, res) => {
       const tokenEmail = req.user.email;
       const email = req.params.email;
       if (tokenEmail !== email) {
