@@ -104,7 +104,7 @@ const AllJobs = () => {
 
               <button
                 type="submit"
-                className="px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600"
+                className="px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-blue-700 rounded-md hover:bg-blue-600"
               >
                 Search
               </button>
@@ -123,7 +123,7 @@ const AllJobs = () => {
           </select>
 
           {/* Reset */}
-          <button onClick={handleReset} className="btn">
+          <button onClick={handleReset} className="btn bg-blue-700 py-3 px-4 rounded-md">
             Reset
           </button>
         </div>
