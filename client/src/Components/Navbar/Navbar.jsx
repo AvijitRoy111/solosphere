@@ -48,6 +48,15 @@ const Navbar = () => {
             </Link>
           </li>
 
+          <li>
+            <Link
+              to="/allJobs"
+              className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+            >
+              All Jobs
+            </Link>
+          </li>
+
           {/* Login only if NOT user */}
           {!user && (
             <li>
