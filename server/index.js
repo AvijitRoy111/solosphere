@@ -98,13 +98,9 @@ async function run() {
     // update bid request status ...
     app.patch('/bids/:id', async(req, res) =>{
       const id = req.params.id;
-      const status = req.body;
+      const { status } = req.body;
       const query = {_id : new ObjectId(id)};
-      const updateStatus = {
-        $set:{
-          status
-        }
-      };
+      const updateStatus = { $set: { status } };
       const result = await bidsCollection.updateOne(query, updateStatus);
       res.send(result)
     })
@@ -129,7 +125,7 @@ async function run() {
      // show bids request data in mongodb..
      app.get('/bids-request/:email', async(req, res) =>{
       const email = req.params.email;
-      const query = {'buyer.email' : email}
+      const query = {'buyer.buyer_email' : email}
       const result = await bidsCollection.find(query).toArray()
       res.send(result)
     })

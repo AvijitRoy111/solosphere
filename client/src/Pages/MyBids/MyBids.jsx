@@ -101,10 +101,30 @@ const MyBids = () => {
                         </div>
                       </td>
                       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                        <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
-                          <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
-                          <h2 className="text-sm font-normal ">{bid.status}</h2>
-                        </div>
+                        <td className="px-4 py-4 text-sm font-medium">
+                          {bid.status === "In Progress" ? (
+                            <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-blue-100/60 text-blue-500">
+                              <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                              <h2 className="text-sm font-normal">
+                                {bid.status}
+                              </h2>
+                            </div>
+                          ) : bid.status === "Rejected" ? (
+                            <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-red-100/60 text-red-500">
+                              <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                              <h2 className="text-sm font-normal">
+                                {bid.status}
+                              </h2>
+                            </div>
+                          ) : (
+                            <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
+                              <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
+                              <h2 className="text-sm font-normal">
+                                {bid.status}
+                              </h2>
+                            </div>
+                          )}
+                        </td>
                       </td>
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <button
