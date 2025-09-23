@@ -34,7 +34,7 @@ const UpdateJob = () => {
     try {
       const { data } = await axios.put(
         `${import.meta.env.VITE_api}/jobs/${_id}`,
-        updatedJob
+        updatedJob, {withCredentials:true}
       );
 
       if (data.modifiedCount > 0) {

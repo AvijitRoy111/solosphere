@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +16,16 @@ const SignUp = () => {
   // sign in with google.............
   const handleSignInWithGoogle = async () => {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      if (!result?.user?.email) {
+        toast.error("No email found in Google account");
+        return;
+      }
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_api}/jwt`,
+        { email: result.user.email },
+        { withCredentials: true }
+      );
       toast.success("User SignIn Successfull");
       navigate(from);
     } catch (error) {
@@ -36,9 +46,17 @@ const SignUp = () => {
     try {
       // create user ..........
       const result = await createUser(email, password);
-      console.log(result);
       await updateUserProfile(name, photoUrl);
-      setUser({ ...User, photoUrl: photoUrl, displayName: name });
+      setUser({ ...result?.user, photoUrl: photoUrl, displayName: name });
+      if (!result?.user?.email) {
+        toast.error("No email found in Google account");
+        return;
+      }
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_api}/jwt`,
+        { email: result.user.email },
+        { withCredentials: true }
+      );
       navigate(from);
       toast.success("User Create Successfull");
     } catch (error) {

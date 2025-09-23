@@ -74,7 +74,7 @@ const JobDetails = () => {
     };
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_api}/bids`, bidData);
+      const { data } = await axios.post(`${import.meta.env.VITE_api}/bids`, bidData ,{withCredentials:true});
       if (data.insertedId) {
         setIsModalOpen(true); 
       }

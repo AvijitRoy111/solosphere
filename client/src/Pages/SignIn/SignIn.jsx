@@ -3,52 +3,62 @@ import { Eye, EyeOff } from "lucide-react";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const SignIn = () => {
-     const [showPassword, setShowPassword] = useState(false);
-     const {signInWithGoogle, signIn} =useContext(AuthContext);
-     const location = useLocation()
-     const from = location.state || '/'
-     const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  const { signInWithGoogle, signIn } = useContext(AuthContext);
+  const location = useLocation();
+  const from = location.state || "/";
+  const navigate = useNavigate();
 
+  // sign in with google.............
+  const handleSignInWithGoogle = async () => {
+    try {
+      const result = await signInWithGoogle();
+      if (!result?.user?.email) {
+        toast.error("No email found in Google account");
+        return;
+      }
 
-     // sign in with google.............
-     const handleSignInWithGoogle = async() =>{
-          try{
-               await signInWithGoogle();
-               toast.success("User SignIn Successfull")
-               navigate('/')
-          }
-          catch(error){
-               toast.error(error.message)
-          }
-     }
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_api}/jwt`,
+        { email: result.user.email },
+        { withCredentials: true }
+      );
+      toast.success("User SignIn Successful");
+      navigate("/");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
-     // sign in with google and password........
-     const signInWithEmailAndPassword =async (e) =>{
-          e.preventDefault()
-          const form = e.target;
-          const email = form.email.value;
-          const password = form.password.value;
-          console.log(email, password)
+  // sign in with google and password........
+  const signInWithEmailAndPassword = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
 
-
-          // user login............
-          try{
-               const result = await signIn(email, password)
-               console.log(result)
-               navigate(from)
-               toast.success("User SignIn Successfull")
-          }
-          catch(error){
-               toast.error(error?.message)
-          }
-
-     }
-
-
-
-
+    // user login............
+    try {
+      const result = await signIn(email, password);
+      if (!result?.user?.email) {
+        toast.error("No email found in Google account");
+        return;
+      }
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_api}/jwt`,
+        { email: result.user.email },
+        { withCredentials: true }
+      );
+      navigate(from);
+      toast.success("User SignIn Successfull");
+    } catch (error) {
+      toast.error(error?.message);
+    }
+  };
 
   return (
     <div className=" flex justify-center items-center py-12 px-4 md:px-6 transition-colors duration-300">
@@ -77,7 +87,10 @@ const SignIn = () => {
           </p>
 
           {/* Google Sign-In */}
-          <div onClick={handleSignInWithGoogle} className="flex cursor-pointer items-center justify-center mt-4 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
+          <div
+            onClick={handleSignInWithGoogle}
+            className="flex cursor-pointer items-center justify-center mt-4 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+          >
             <div className="px-4 py-2">
               <svg className="w-6 h-6" viewBox="0 0 40 40">
                 <path
@@ -140,21 +153,22 @@ const SignIn = () => {
               <input
                 id="loggingPassword"
                 name="password"
-                type={showPassword ? "password"  : "text"}
+                type={showPassword ? "password" : "text"}
                 autoComplete="current-password"
                 className="block w-full px-4 py-2 text-black  bg-gray-300    border border-gray-300 dark:border-gray-600 rounded-lg focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none transition-colors duration-300"
               />
-               <span className="absolute bottom-2 right-3" onClick={() =>{setShowPassword(!showPassword)}}>
-               {
-                    showPassword ? <EyeOff />: <Eye />
-               }
+              <span
+                className="absolute bottom-2 right-3"
+                onClick={() => {
+                  setShowPassword(!showPassword);
+                }}
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
               </span>
             </div>
 
             <div className="mt-6">
-              <button
-                className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 dark:bg-gray-700 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-              >
+              <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 dark:bg-gray-700 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                 Sign In
               </button>
             </div>
