@@ -163,6 +163,7 @@ const BidsRequest = () => {
                       {/* accept button */}
                       <button
                         onClick={() => handleAccept(bid)}
+                        disabled ={bid.status.status === "Complete"}
                         className="text-gray-500 hover:text-green-500"
                       >
                         ✅
@@ -170,6 +171,7 @@ const BidsRequest = () => {
                       {/* reject button */}
                       <button
                         onClick={() => handleReject(bid)}
+                        disabled ={bid.status.status === "Complete"}
                         className="text-gray-500 hover:text-red-500"
                       >
                         ❌

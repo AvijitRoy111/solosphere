@@ -1,5 +1,7 @@
 const express = require('express')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
@@ -37,6 +39,13 @@ async function run() {
      const jobsCollection = client.db('solosphere').collection('jobs') 
      const bidsCollection = client.db('solosphere').collection('bids') 
 
+
+    //  jwt genarate...............
+    app.post('/jwt', async(req, res) =>{
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_SECRET_TOKEN, {expiresIn:'365d'})
+      res.send(token)
+    })
 
 
      // show jobs from mongodb..

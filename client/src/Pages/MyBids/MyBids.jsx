@@ -29,7 +29,7 @@ const MyBids = () => {
       if (data.modifiedCount > 0) {
         setModal({
           type: "success",
-          message: "Your bid has been marked as Complete 🎉",
+          message: "Your bid has been marked as Complete ",
           bidId: bid._id,
         });
       }
