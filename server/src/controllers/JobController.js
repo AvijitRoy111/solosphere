@@ -1,26 +1,58 @@
+const { ObjectId } = require("mongodb");
 const client = require("../helper/client");
 
 const jobsCollection = client.db("solosphere").collection("jobs");
 
-const getJobs = async (req, res, next) => {
-  const result = await jobsCollection.find().toArray();
-  //res.send(result);
-  //res.status(200).json({ message: "all jobs", data:result})
-  const name = "avi"
-  if(name !="avi"){
-     res.status(400).json({
-         success: false,
-         message: "name is wrong"
-     })
-  }
-  next()
-}
+// 1. Get All Jobs
+const getJobs = async (req, res) => {
+  const jobs = await jobsCollection.find().toArray();
+  res.status(200).json({ success: true, message: "All Jobs", data: jobs });
+};
 
+// 2. Get Single Job
+const getJobById = async (req, res) => {
+  const id = req.params.id;
+  const result = await jobsCollection.findOne({ _id: new ObjectId(id) });
+  res.status(200).json({ success: true, data: result });
+};
 
-const goniJob = async (req, res) => {
-  res.status(200).json({
-         message: "Goni Job"
-  })
-}
+// 3. Get Jobs by Buyer Email
+const getJobsByEmail = async (req, res) => {
+  const email = req.params.email;
+  const jobs = await jobsCollection.find({ "buyer.email": email }).toArray();
+  res.status(200).json({ success: true, data: jobs });
+};
 
-module.exports = { getJobs, goniJob }
+// 4. Create Job
+const createJob = async (req, res) => {
+  const jobData = req.body;
+  const result = await jobsCollection.insertOne(jobData);
+  res.status(201).json({ success: true, message: "Job created", data: result });
+};
+
+// 5. Update Job
+const updateJob = async (req, res) => {
+  const id = req.params.id;
+  const jobData = req.body;
+  const result = await jobsCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: jobData }
+  );
+  res.status(200).json({ success: true, message: "Job updated", data: result });
+};
+
+// 6. Delete Job
+const deleteJob = async (req, res) => {
+  const id = req.params.id;
+  const result = await jobsCollection.deleteOne({ _id: new ObjectId(id) });
+  res.status(200).json({ success: true, message: "Job deleted", data: result });
+};
+
+module.exports = {
+  getJobs,
+  getJobById,
+  getJobsByEmail,
+  createJob,
+  updateJob,
+  deleteJob,
+};
