@@ -11,6 +11,7 @@ const bidRoutes = require("./src/routes/bidroutes");
 const app = express();
 const port = process.env.PORT || 5000;
 
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
@@ -59,7 +60,7 @@ app.use("/bids", bidRoutes);
 // ----------- ROOT -----------
 app.get("/", async (req, res) => {
   await client.db("admin").command({ ping: 1 });
-  res.send("✅ Solosphere Server is running!");
+  res.send("Solosphere Server is running!");
 });
 
 // ----------- 404 -----------
@@ -68,4 +69,4 @@ app.use((req, res) => {
 });
 
 // ----------- SERVER RUN -----------
-app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
+app.listen(port, () => console.log(`solosphere Server running on port ${port}`));
