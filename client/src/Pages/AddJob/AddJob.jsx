@@ -37,11 +37,12 @@ const AddJob = () => {
         photo: user?.photoURL,
       },
     };
+    console.log(jobData)
 
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_api}/jobs`,
-        jobData , {withCredentials:true}
+        jobData ,
       );
       if (data.insertedId) {
         setIsModalOpen(true);

@@ -28,14 +28,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/jobDetails/:id",
-        errorElement: <Error></Error>,
         element: (
           <PrivateRoutes>
             <JobDetails />
           </PrivateRoutes>
         ),
         loader: ({ params }) =>
-          fetch(`${import.meta.env.VITE_api}/job/${params.id}`),
+          fetch(`${import.meta.env.VITE_api}/jobs/${params.id}`),
       },
       {
         path: "/updateJob/:id",

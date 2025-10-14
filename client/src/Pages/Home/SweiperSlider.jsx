@@ -1,5 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import image2 from "../../assets/images/carosul-2.jpg"
+import image3 from "../../assets/images/carosul-3.jpg"
+import image1 from "../../assets/images/carosul-4.jpg"
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -14,19 +17,19 @@ const SweiperSlider = () => {
     },
     {
       id: 2,
-      img: "https://picsum.photos/id/1015/1000/600/",
+      img: image1,
       title: "Adventure Awaits",
       desc: "Take the journey of a lifetime with unforgettable experiences.",
     },
     {
       id: 3,
-      img: "https://picsum.photos/id/1019/1000/600/",
+      img: image2,
       title: "Relax & Enjoy",
       desc: "Find peace in beautiful landscapes around the world.",
     },
     {
       id: 4,
-      img: "https://picsum.photos/id/1022/1000/600/",
+      img: image3,
       title: "Your Dream Vacation",
       desc: "Make memories that last forever with loved ones.",
     },

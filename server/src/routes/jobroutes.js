@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/", getJobs);
 router.get("/:id", getJobById);
 router.get("/email/:email", getJobsByEmail);
-router.post("/", createJob);
+router.post("/jobs", createJob);
 router.put("/:id", updateJob);
 router.delete("/:id", deleteJob);
 

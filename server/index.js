@@ -9,7 +9,7 @@ const jobRoutes = require("./src/routes/jobroutes");
 const bidRoutes = require("./src/routes/bidroutes");
 
 //Import Middleware
-const verifyToken = require("./src/middleware/verifyToken");
+const verifyToken = require("./src/middlewares/verifyToken");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -52,7 +52,7 @@ app.use("/bids", bidRoutes);
 // ----------- ROOT -----------
 app.get("/", async (req, res) => {
   await client.db("admin").command({ ping: 1 });
-  res.send("Solosphere Server is running!");
+  res.send("Solosphere Server is running 500");
 });
 
 // ----------- 404 -----------

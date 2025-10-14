@@ -17,10 +17,9 @@ const MyPostedJob = () => {
 
   const getData = async () => {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_api}/jobs/${user?.email}`,
-      {withCredentials:true}
+      `${import.meta.env.VITE_api}/jobs/email/${user?.email}`,
     );
-    setJobs(data);
+    setJobs(data.data);
   };
 
   // delete handler
@@ -180,6 +179,7 @@ const MyPostedJob = () => {
 
                   {/* Confirm Delete Modal */}
                   <div className="absolute top-1/2 left-1/2">
+
                     {showConfirm && (
                       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
                         <div className="bg-white p-6 rounded-xl shadow-lg text-center max-w-sm">

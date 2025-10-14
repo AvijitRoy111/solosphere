@@ -9,11 +9,13 @@ const BidsRequest = () => {
   // { type: "success"|"failed"|"reject", message: "", bidId: "" }
 
   useEffect(() => {
+    if (!user?.email) return;
+    
     const getData = async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_api}/bids-request/${user?.email}`, {withCredentials:true}
+        `${import.meta.env.VITE_api}/bids/bids-request/${user?.email}`,
       );
-      setBidRequest(data);
+      setBidRequest(data.data);
     };
     getData();
   }, [user]);

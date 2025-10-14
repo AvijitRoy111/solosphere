@@ -7,16 +7,18 @@ const MyBids = () => {
   const [bids, setBids] = useState([]);
   const [modal, setModal] = useState(null); 
   useEffect(() => {
+     if (!user?.email) return;
+
     const getData = async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_api}/my-bids/${user?.email}`, {withCredentials:true}
+        `${import.meta.env.VITE_api}/bids/my-bids/${user?.email}`, 
       );
-      setBids(data);
+      setBids(data.data);
     };
     getData();
   }, [user]);
 
-  // ✅ Handle Complete Action
+  // Handle Complete Action
   const handleComplete = async (bid) => {
     if (bid.status !== "In Progress") return; 
 

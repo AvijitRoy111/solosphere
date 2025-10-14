@@ -26,6 +26,7 @@ const getJobsByEmail = async (req, res) => {
 // 4. Create Job
 const createJob = async (req, res) => {
   const jobData = req.body;
+  console.log(jobData)
   const result = await jobsCollection.insertOne(jobData);
   res.status(201).json({ success: true, message: "Job created", data: result });
 };
