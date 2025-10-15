@@ -11,13 +11,18 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  //  Navigate to home after login
   useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
+    if (user) navigate("/");
   }, [user, navigate]);
+
+  // Listen for window resize
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -32,7 +37,7 @@ const Navbar = () => {
   return (
     <nav className="w-full fixed z-50 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 transition-colors duration-300 px-4 md:px-12 lg:px-20">
       <div className="flex justify-between items-center h-16">
-        {/*  Left: Logo */}
+        {/* Left: Logo */}
         <div className="flex gap-2 items-center">
           <img className="w-auto h-8 brightness-200" src={logo} alt="Logo" />
           <span className="font-extrabold text-xl text-gray-900 dark:text-white">
@@ -40,7 +45,7 @@ const Navbar = () => {
           </span>
         </div>
 
-        {/*  Desktop Menu */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-5">
           <ul className="flex gap-4 text-gray-800 dark:text-gray-200 font-medium">
             <li>
@@ -61,7 +66,7 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/*  Theme toggle */}
+          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             className={`p-2 rounded transition ${
@@ -77,7 +82,7 @@ const Navbar = () => {
             )}
           </button>
 
-          {/*  User Icon / Dropdown */}
+          {/* User Icon / Dropdown */}
           {user ? (
             <div className="relative">
               <div
@@ -92,18 +97,55 @@ const Navbar = () => {
                 />
               </div>
 
-              {/*  Dropdown */}
-              {showDropdown && (
+              {/* Dropdown (only visible in Desktop) */}
+              {!isMobile && showDropdown && (
                 <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-gray-800 shadow-lg rounded-md p-3 text-gray-800 dark:text-gray-100 z-50">
-                  <p className="text-sm font-semibold mb-2">
-                    {user.displayName || "User"}
-                  </p>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full bg-gray-200 dark:bg-gray-700 py-2 rounded hover:bg-blue-500 hover:text-white transition"
-                  >
-                    Logout
-                  </button>
+                  <ul className="flex flex-col gap-2 text-sm font-medium">
+                    <li>
+                      <Link
+                        to="/add-job"
+                        onClick={() => setShowDropdown(false)}
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Add Job
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/my-posted-job"
+                        onClick={() => setShowDropdown(false)}
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                      >
+                        My Posted Jobs
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/my-bids"
+                        onClick={() => setShowDropdown(false)}
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                      >
+                        My Bids
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/bids-request"
+                        onClick={() => setShowDropdown(false)}
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Bid Requests
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left bg-gray-200 dark:bg-gray-700 py-2 px-3 rounded hover:bg-blue-500 hover:text-white transition"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
                 </div>
               )}
             </div>
@@ -117,7 +159,6 @@ const Navbar = () => {
 
         {/* Mobile Right Side */}
         <div className="md:hidden flex items-center gap-3">
-          {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             className={`p-2 rounded transition ${
@@ -159,8 +200,8 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Dropdown visible on mobile (when drawer closed) */}
-      {showDropdown && user && !menuOpen && (
+      {/* ✅ Mobile-only small dropdown */}
+      {isMobile && showDropdown && user && !menuOpen && (
         <div className="absolute right-4 top-16 bg-white dark:bg-gray-800 shadow-lg rounded-md p-3 w-32 z-50">
           <p className="text-sm text-center font-semibold text-gray-700 dark:text-gray-100 mb-2">
             {user.displayName || "User"}
@@ -190,7 +231,9 @@ const Navbar = () => {
                 className="w-8 h-8 rounded-full"
               />
             ) : (
-              <Link to="/signIn"><User className="w-6 h-6 text-gray-800 dark:text-white" /></Link>
+              <Link to="/signIn">
+                <User className="w-6 h-6 text-gray-800 dark:text-white" />
+              </Link>
             )}
             <button
               onClick={toggleTheme}
@@ -200,11 +243,7 @@ const Navbar = () => {
                   : "text-yellow-400 hover:bg-gray-700"
               }`}
             >
-              {theme === "light" ? (
-                <Moon className="w-5 h-5" />
-              ) : (
-                <Sun className="w-5 h-5" />
-              )}
+              {theme === "light" ? <Moon /> : <Sun />}
             </button>
           </div>
           <button
@@ -279,7 +318,7 @@ const Navbar = () => {
                     handleLogout();
                     setMenuOpen(false);
                   }}
-                  className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white py-2 rounded hover:bg-blue-500 hover:text-white transition"
+                  className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white text-center py-2 rounded hover:bg-blue-500 hover:text-white transition"
                 >
                   Logout
                 </button>
@@ -299,7 +338,6 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {/* Overlay */}
       {menuOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-[99]"

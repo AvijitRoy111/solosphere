@@ -6,11 +6,11 @@ const BidsRequest = () => {
   const { user } = useContext(AuthContext);
   const [bidRequest, setBidRequest] = useState([]);
   const [modal, setModal] = useState(null);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [bidsPerPage, setBidsPerPage] = useState(5);
 
   useEffect(() => {
     if (!user?.email) return;
-
     const getData = async () => {
       const { data } = await axios.get(
         `${import.meta.env.VITE_api}/bids/bids-request/${user?.email}`
@@ -19,6 +19,15 @@ const BidsRequest = () => {
     };
     getData();
   }, [user]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(bidRequest.length / bidsPerPage);
+  const startIndex = (currentPage - 1) * bidsPerPage;
+  const currentBids = bidRequest.slice(startIndex, startIndex + bidsPerPage);
+
+  const handlePageChange = (page) => setCurrentPage(page);
+  const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const handlePrev = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
   // Handle Accept
   const handleAccept = async (bid) => {
@@ -125,6 +134,42 @@ const BidsRequest = () => {
     setModal(null);
   };
 
+  // Pagination buttons generator
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+      }
+    }
+
+    return pages.map((num, i) =>
+      num === "..." ? (
+        <span key={i} className="px-3 py-1 text-gray-500">...</span>
+      ) : (
+        <button
+          key={num}
+          onClick={() => handlePageChange(num)}
+          className={`px-3 py-1 rounded-md text-sm font-medium ${
+            currentPage === num
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+          }`}
+        >
+          {num}
+        </button>
+      )
+    );
+  };
+
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
@@ -149,7 +194,7 @@ const BidsRequest = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {bidRequest.map((bid) => (
+              {currentBids.map((bid) => (
                 <tr key={bid._id}>
                   <td className="px-4 py-4 text-sm text-gray-500">{bid.job_title}</td>
                   <td className="px-4 py-4 text-sm text-gray-500">{bid.buyer_email}</td>
@@ -182,32 +227,9 @@ const BidsRequest = () => {
                   </td>
                   <td className="px-4 py-4 text-sm">
                     <div className="flex items-center gap-x-6">
-                      {/*  Accept */}
-                      <button
-                        onClick={() => handleAccept(bid)}
-                        title="Mark as In Progress"
-                        className="text-gray-500 hover:text-green-500"
-                      >
-                        ✅
-                      </button>
-
-                      {/* Reject */}
-                      <button
-                        onClick={() => handleReject(bid)}
-                        title="Reject Bid"
-                        className="text-gray-500 hover:text-red-500"
-                      >
-                        ❌
-                      </button>
-
-                      {/* Delete */}
-                      <button
-                        onClick={() => handleDelete(bid)}
-                        title="Delete Bid"
-                        className="text-gray-500 hover:text-black"
-                      >
-                        🗑️
-                      </button>
+                      <button onClick={() => handleAccept(bid)} title="Mark as In Progress">✅</button>
+                      <button onClick={() => handleReject(bid)} title="Reject Bid">❌</button>
+                      <button onClick={() => handleDelete(bid)} title="Delete Bid">🗑️</button>
                     </div>
                   </td>
                 </tr>
@@ -215,13 +237,61 @@ const BidsRequest = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {bidRequest.length > bidsPerPage && (
+          <div className="flex flex-col md:flex-row items-center justify-center mt-8 gap-4">
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <button
+                onClick={handlePrev}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 rounded-md ${
+                  currentPage === 1
+                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    : "bg-blue-600 text-white hover:bg-blue-500"
+                }`}
+              >
+                Prev
+              </button>
+
+              {renderPageNumbers()}
+
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 rounded-md ${
+                  currentPage === totalPages
+                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    : "bg-blue-600 text-white hover:bg-blue-500"
+                }`}
+              >
+                Next
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-700">Per Page:</span>
+              <select
+                className="border bg-white p-2 rounded-md"
+                value={bidsPerPage}
+                onChange={(e) => {
+                  setBidsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+              </select>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/*  MODALS */}
+      {/* MODALS */}
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-            {/*  Delete Confirmation */}
             {modal.type === "deleteConfirm" && (
               <div>
                 <div className="text-red-500 text-5xl mb-4">⚠️</div>
@@ -243,54 +313,34 @@ const BidsRequest = () => {
               </div>
             )}
 
-            {/*  Delete Success */}
-            {modal.type === "deleteSuccess" && (
+            {/* Other modal types */}
+            {["deleteSuccess", "success", "reject", "failed"].includes(modal.type) && (
               <div>
-                <div className="text-green-500 text-5xl mb-4">✔️</div>
-                <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
-                <button
-                  onClick={closeModal}
-                  className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                <div
+                  className={`text-5xl mb-4 ${
+                    modal.type === "success" || modal.type === "deleteSuccess"
+                      ? "text-green-500"
+                      : modal.type === "reject"
+                      ? "text-red-500"
+                      : "text-yellow-500"
+                  }`}
                 >
-                  Close
-                </button>
-              </div>
-            )}
-
-            {/* Other Modals */}
-            {modal.type === "success" && (
-              <div>
-                <div className="text-green-500 text-5xl mb-4">✔️</div>
+                  {modal.type === "success" || modal.type === "deleteSuccess"
+                    ? "✔️"
+                    : modal.type === "reject"
+                    ? "❌"
+                    : "⚠️"}
+                </div>
                 <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
                 <button
                   onClick={closeModal}
-                  className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-                >
-                  Close
-                </button>
-              </div>
-            )}
-
-            {modal.type === "reject" && (
-              <div>
-                <div className="text-red-500 text-5xl mb-4">❌</div>
-                <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
-                <button
-                  onClick={closeModal}
-                  className="mt-4 px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-                >
-                  Close
-                </button>
-              </div>
-            )}
-
-            {modal.type === "failed" && (
-              <div>
-                <div className="text-yellow-500 text-5xl mb-4">⚠️</div>
-                <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
-                <button
-                  onClick={closeModal}
-                  className="mt-4 px-6 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                  className={`mt-4 px-6 py-2 rounded-md text-white ${
+                    modal.type === "success" || modal.type === "deleteSuccess"
+                      ? "bg-green-500 hover:bg-green-600"
+                      : modal.type === "reject"
+                      ? "bg-red-500 hover:bg-red-600"
+                      : "bg-yellow-500 hover:bg-yellow-600"
+                  }`}
                 >
                   Close
                 </button>
