@@ -1,26 +1,28 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const MyBids = () => {
   const { user } = useContext(AuthContext);
   const [bids, setBids] = useState([]);
-  const [modal, setModal] = useState(null); 
+  const [modal, setModal] = useState(null); // {type: 'success'|'deleteConfirm', message, bidId}
+
   useEffect(() => {
-     if (!user?.email) return;
+    if (!user?.email) return;
 
     const getData = async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_api}/bids/my-bids/${user?.email}`, 
+        `${import.meta.env.VITE_api}/bids/my-bids/${user?.email}`
       );
       setBids(data.data);
     };
     getData();
   }, [user]);
 
-  // Handle Complete Action
+  // ✅ Handle Complete Action
   const handleComplete = async (bid) => {
-    if (bid.status !== "In Progress") return; 
+    if (bid.status !== "In Progress") return;
 
     try {
       const { data } = await axios.patch(
@@ -31,7 +33,7 @@ const MyBids = () => {
       if (data.data.modifiedCount > 0) {
         setModal({
           type: "success",
-          message: "Your bid has been marked as Complete ",
+          message: "Your bid has been marked as Complete!",
           bidId: bid._id,
         });
       }
@@ -40,7 +42,35 @@ const MyBids = () => {
     }
   };
 
-  // ✅ Close Modal and Update UI
+  // ✅ Handle Delete Action (open confirm modal)
+  const handleDelete = (bid) => {
+    setModal({
+      type: "deleteConfirm",
+      message: `Are you sure you want to delete "${bid.job_title}"?`,
+      bidId: bid._id,
+    });
+  };
+
+  // ✅ Confirm Delete (delete from DB + update UI)
+  const confirmDelete = async () => {
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_api}/bids/${modal.bidId}`
+      );
+
+      if (data.success) {
+        setBids((prev) => prev.filter((b) => b._id !== modal.bidId));
+        setModal({
+          type: "deleteSuccess",
+          message: "Bid deleted successfully!",
+        });
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  // ✅ Close Modal and Update UI if needed
   const closeModal = () => {
     if (modal?.type === "success") {
       setBids((prev) =>
@@ -77,9 +107,7 @@ const MyBids = () => {
                     <th className="py-3.5 px-4 text-sm text-gray-500">
                       Category
                     </th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">
-                      Status
-                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">Status</th>
                     <th className="py-3.5 px-4 text-sm text-gray-500">
                       Actions
                     </th>
@@ -136,8 +164,9 @@ const MyBids = () => {
                         )}
                       </td>
 
-                      {/* ✅ Action Button */}
-                      <td className="px-4 py-4 text-sm whitespace-nowrap">
+                      {/* ✅ Action Buttons */}
+                      <td className="px-4 py-4 text-sm whitespace-nowrap flex gap-4">
+                        {/* Complete */}
                         <button
                           onClick={() => handleComplete(bid)}
                           title="Mark Complete"
@@ -163,6 +192,15 @@ const MyBids = () => {
                             />
                           </svg>
                         </button>
+
+                        {/* Delete */}
+                        <button
+                          onClick={() => handleDelete(bid)}
+                          title="Delete Bid"
+                          className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                        >
+                          <span><RiDeleteBin6Line /></span>
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -176,16 +214,41 @@ const MyBids = () => {
       {/* ✅ Modal */}
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-            <div className="text-green-500 text-5xl mb-4">✔️</div>
-            <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
-            <button
-              onClick={closeModal}
-              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-            >
-              Close
-            </button>
-          </div>
+          {/* Success Modal */}
+          {(modal.type === "success" || modal.type === "deleteSuccess") && (
+            <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
+              <div className="text-green-500 text-5xl mb-4">✔️</div>
+              <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
+              <button
+                onClick={closeModal}
+                className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              >
+                Close
+              </button>
+            </div>
+          )}
+
+          {/* Confirm Delete Modal */}
+          {modal.type === "deleteConfirm" && (
+            <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
+              <div className="text-red-500 text-5xl mb-4">⚠️</div>
+              <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
+              <div className="flex justify-center gap-4 mt-4">
+                <button
+                  onClick={confirmDelete}
+                  className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={closeModal}
+                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </section>
