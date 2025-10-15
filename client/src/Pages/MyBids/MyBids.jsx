@@ -6,9 +6,12 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 const MyBids = () => {
   const { user } = useContext(AuthContext);
   const [bids, setBids] = useState([]);
-  const [modal, setModal] = useState(null); 
+  const [modal, setModal] = useState(null);
 
-  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [bidsPerPage, setBidsPerPage] = useState(5);
+
   useEffect(() => {
     if (!user?.email) return;
 
@@ -20,6 +23,20 @@ const MyBids = () => {
     };
     getData();
   }, [user]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(bids.length / bidsPerPage);
+  const indexOfLast = currentPage * bidsPerPage;
+  const indexOfFirst = indexOfLast - bidsPerPage;
+  const currentBids = bids.slice(indexOfFirst, indexOfLast);
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   // Handle Complete Action
   const handleComplete = async (bid) => {
@@ -59,7 +76,6 @@ const MyBids = () => {
         `${import.meta.env.VITE_api}/bids/${modal.bidId}`
       );
 
-      // Success Delete
       if (data.success) {
         setBids((prev) => prev.filter((b) => b._id !== modal.bidId));
         setModal({
@@ -81,7 +97,7 @@ const MyBids = () => {
     }
   };
 
-  //Modal and Update UI if needed
+  //Modal Close
   const closeModal = () => {
     if (modal?.type === "success") {
       setBids((prev) =>
@@ -91,25 +107,19 @@ const MyBids = () => {
       );
     }
 
-    //deleteSuccess modal
-    if (modal?.type === "deleteSuccess" || modal?.type === "error") {
-      setModal(null);
-      return;
-    }
-
     setModal(null);
   };
 
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
-        <h2 className="text-lg font-medium text-gray-800 ">My Bids</h2>
-
-        <span className="font-bold px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">
+        <h2 className="text-lg font-medium text-gray-800">My Bids</h2>
+        <span className="font-bold px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">
           {bids.length} Bid
         </span>
       </div>
 
+      {/* Table */}
       <div className="flex flex-col mt-6">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -118,23 +128,15 @@ const MyBids = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="py-3.5 px-4 text-sm text-gray-500">Title</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">
-                      Deadline
-                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">Deadline</th>
                     <th className="py-3.5 px-4 text-sm text-gray-500">Price</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">
-                      Category
-                    </th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">
-                      Status
-                    </th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">
-                      Actions
-                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">Category</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">Status</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {bids.map((bid) => (
+                  {currentBids.map((bid) => (
                     <tr key={bid._id}>
                       <td className="px-4 py-4 text-sm text-gray-500">
                         {bid.job_title}
@@ -151,77 +153,48 @@ const MyBids = () => {
                         </p>
                       </td>
 
-                      {/* Status badge */}
+                      {/* Status */}
                       <td className="px-4 py-4 text-sm font-medium">
                         {bid.status === "In Progress" ? (
-                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-blue-100/60 text-blue-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                            <h2 className="text-sm font-normal">
-                              {bid.status}
-                            </h2>
-                          </div>
+                          <span className="px-3 py-1 rounded-full bg-blue-100/60 text-blue-600 text-xs">
+                            {bid.status}
+                          </span>
                         ) : bid.status === "Rejected" ? (
-                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-red-100/60 text-red-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
-                            <h2 className="text-sm font-normal">
-                              {bid.status}
-                            </h2>
-                          </div>
+                          <span className="px-3 py-1 rounded-full bg-red-100/60 text-red-600 text-xs">
+                            {bid.status}
+                          </span>
                         ) : bid.status === "Complete" ? (
-                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-green-100/60 text-green-700">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-700"></span>
-                            <h2 className="text-sm font-normal">
-                              {bid.status}
-                            </h2>
-                          </div>
+                          <span className="px-3 py-1 rounded-full bg-green-100/60 text-green-600 text-xs">
+                            {bid.status}
+                          </span>
                         ) : (
-                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
-                            <h2 className="text-sm font-normal">
-                              {bid.status}
-                            </h2>
-                          </div>
+                          <span className="px-3 py-1 rounded-full bg-yellow-100/60 text-yellow-600 text-xs">
+                            {bid.status}
+                          </span>
                         )}
                       </td>
 
-                      {/* Action Buttons */}
-                      <td className="px-4 py-4 text-sm whitespace-nowrap flex gap-4">
-                        {/* Complete */}
+                      {/* Actions */}
+                      <td className="px-4 py-4 text-sm flex gap-4">
                         <button
                           onClick={() => handleComplete(bid)}
                           title="Mark Complete"
                           disabled={bid.status !== "In Progress"}
-                          className={`transition-colors duration-200 focus:outline-none ${
+                          className={`transition-colors duration-200 ${
                             bid.status === "In Progress"
-                              ? "text-green-500 hover:text-green-800"
+                              ? "text-green-500 hover:text-green-700"
                               : "text-gray-300 cursor-not-allowed"
                           }`}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"
-                            />
-                          </svg>
+                          ✅
                         </button>
 
-                        {/* Delete */}
                         <button
                           onClick={() => handleDelete(bid)}
                           title="Delete Bid"
-                          className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                          className="text-red-500 hover:text-red-700 transition"
                         >
-                          <span className="text-xl">
-                            <RiDeleteBin6Line />
-                          </span>
+                          <RiDeleteBin6Line className="text-xl" />
                         </button>
                       </td>
                     </tr>
@@ -233,10 +206,123 @@ const MyBids = () => {
         </div>
       </div>
 
-      {/*  Modal */}
+      {/* Pagination */}
+      {bids.length > 0 && (
+        <div className="flex flex-col items-center justify-center mt-8 gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
+            {/* Prev */}
+            <button
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 text-sm rounded-md ${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "text-blue-600 hover:bg-blue-100"
+              }`}
+            >
+              Prev
+            </button>
+
+            {/* Dynamic Page Numbers */}
+            {(() => {
+              const pages = [];
+              const maxVisible = 2;
+              let start = Math.max(1, currentPage - 2);
+              let end = Math.min(totalPages, start + maxVisible - 1);
+
+              if (end - start < maxVisible - 1) {
+                start = Math.max(1, end - maxVisible + 1);
+              }
+
+              if (start > 1) {
+                pages.push(
+                  <button
+                    key={1}
+                    onClick={() => setCurrentPage(1)}
+                    className={`px-3 py-1 text-sm rounded-md ${
+                      currentPage === 1
+                        ? "bg-blue-600 text-white"
+                        : "text-blue-600 hover:bg-blue-100"
+                    }`}
+                  >
+                    1
+                  </button>
+                );
+                if (start > 2) pages.push(<span key="s-dots">...</span>);
+              }
+
+              for (let i = start; i <= end; i++) {
+                pages.push(
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i)}
+                    className={`px-3 py-1 text-sm rounded-md ${
+                      currentPage === i
+                        ? "bg-blue-600 text-white"
+                        : "text-blue-600 hover:bg-blue-100"
+                    }`}
+                  >
+                    {i}
+                  </button>
+                );
+              }
+
+              if (end < totalPages) {
+                if (end < totalPages - 1) pages.push(<span key="e-dots">...</span>);
+                pages.push(
+                  <button
+                    key={totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                    className={`px-3 py-1 text-sm rounded-md ${
+                      currentPage === totalPages
+                        ? "bg-blue-600 text-white"
+                        : "text-blue-600 hover:bg-blue-100"
+                    }`}
+                  >
+                    {totalPages}
+                  </button>
+                );
+              }
+
+              return pages;
+            })()}
+
+            {/* Next */}
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 text-sm rounded-md ${
+                currentPage === totalPages
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "text-blue-600 hover:bg-blue-100"
+              }`}
+            >
+              Next
+            </button>
+          </div>
+
+          {/* Bids per page */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Bids per page:</span>
+            <select
+              className="border bg-white text-sm p-1.5 rounded-md"
+              value={bidsPerPage}
+              onChange={(e) => {
+                setBidsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+            </select>
+          </div>
+        </div>
+      )}
+
+      {/* Modal */}
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-          {/* Success Modal */}
           {(modal.type === "success" || modal.type === "deleteSuccess") && (
             <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
               <div className="text-green-500 text-5xl mb-4">✔️</div>
@@ -250,7 +336,6 @@ const MyBids = () => {
             </div>
           )}
 
-          {/* Confirm Delete Modal */}
           {modal.type === "deleteConfirm" && (
             <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
               <div className="text-red-500 text-5xl mb-4">⚠️</div>
