@@ -95,14 +95,14 @@ const TabCatagory = () => {
 
                   {/* Pagination Controls */}
                   {filtered.length > 0 && (
-                    <div className="flex flex-col md:flex-row items-center justify-between mt-8 gap-4">
-                     
-                      {/* Prev / Next + Page Info */}
-                      <div className="flex items-center gap-3">
+                    <div className="flex flex-col items-center justify-center mt-8 gap-6">
+                      {/* Page Numbers */}
+                      <div className="flex flex-wrap items-center justify-center gap-2">
+                        {/* Prev Button */}
                         <button
                           onClick={handlePrev}
                           disabled={currentPage === 1}
-                          className={`px-4 py-2 rounded-md ${
+                          className={`px-3 py-1 rounded-md ${
                             currentPage === 1
                               ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                               : "bg-blue-600 text-white hover:bg-blue-500"
@@ -111,11 +111,85 @@ const TabCatagory = () => {
                           Prev
                         </button>
 
-                        <span className="text-gray-700 font-semibold">
-                          Page {currentPage} of {total}
-                        </span>
+                        {/* Dynamic Page Numbers */}
+                        {(() => {
+                          const pages = [];
+                          const totalPageCount = total;
+                          const maxVisible = 5;
 
-                         {/* Per Page Selector */}
+                          let start = Math.max(1, currentPage - 2);
+                          let end = Math.min(
+                            totalPageCount,
+                            start + maxVisible - 1
+                          );
+
+                          if (end - start < maxVisible - 1) {
+                            start = Math.max(1, end - maxVisible + 1);
+                          }
+
+                          
+                          if (start > 1) {
+                            pages.push(
+                              <button
+                                key={1}
+                                onClick={() => setCurrentPage(1)}
+                                className={`px-3 py-1 rounded-md ${
+                                  currentPage === 1
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 hover:bg-gray-200"
+                                }`}
+                              >
+                                1
+                              </button>
+                            );
+
+                            if (start > 2) {
+                              pages.push(<span key="start-dots">...</span>);
+                            }
+                          }
+
+                         
+                          for (let i = start; i <= end; i++) {
+                            pages.push(
+                              <button
+                                key={i}
+                                onClick={() => setCurrentPage(i)}
+                                className={`px-3 py-1 rounded-md ${
+                                  currentPage === i
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 hover:bg-gray-200"
+                                }`}
+                              >
+                                {i}
+                              </button>
+                            );
+                          }
+
+                     
+                          if (end < totalPageCount) {
+                            if (end < totalPageCount - 1) {
+                              pages.push(<span key="end-dots">...</span>);
+                            }
+
+                            pages.push(
+                              <button
+                                key={totalPageCount}
+                                onClick={() => setCurrentPage(totalPageCount)}
+                                className={`px-3 py-1 rounded-md ${
+                                  currentPage === totalPageCount
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-100 hover:bg-gray-200"
+                                }`}
+                              >
+                                {totalPageCount}
+                              </button>
+                            );
+                          }
+
+                          return pages;
+                        })()}
+
+                         {/* Jobs per page selector */}
                       <div className="flex items-center gap-2">
                         
                         <select
@@ -132,10 +206,11 @@ const TabCatagory = () => {
                         </select>
                       </div>
 
+                        {/* Next Button */}
                         <button
                           onClick={() => handleNext(total)}
                           disabled={currentPage === total}
-                          className={`px-4 py-2 rounded-md ${
+                          className={`px-3 py-1 rounded-md ${
                             currentPage === total
                               ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                               : "bg-blue-600 text-white hover:bg-blue-500"
