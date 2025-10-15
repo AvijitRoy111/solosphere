@@ -6,8 +6,9 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 const MyBids = () => {
   const { user } = useContext(AuthContext);
   const [bids, setBids] = useState([]);
-  const [modal, setModal] = useState(null); // {type: 'success'|'deleteConfirm', message, bidId}
+  const [modal, setModal] = useState(null); 
 
+  
   useEffect(() => {
     if (!user?.email) return;
 
@@ -20,7 +21,7 @@ const MyBids = () => {
     getData();
   }, [user]);
 
-  // ✅ Handle Complete Action
+  // Handle Complete Action
   const handleComplete = async (bid) => {
     if (bid.status !== "In Progress") return;
 
@@ -42,7 +43,7 @@ const MyBids = () => {
     }
   };
 
-  // ✅ Handle Delete Action (open confirm modal)
+  //Handle Delete Action 
   const handleDelete = (bid) => {
     setModal({
       type: "deleteConfirm",
@@ -51,26 +52,36 @@ const MyBids = () => {
     });
   };
 
-  // ✅ Confirm Delete (delete from DB + update UI)
+  //Confirm Delete
   const confirmDelete = async () => {
     try {
       const { data } = await axios.delete(
         `${import.meta.env.VITE_api}/bids/${modal.bidId}`
       );
 
-      if (data.data.success) {
+      // Success Delete
+      if (data.success) {
         setBids((prev) => prev.filter((b) => b._id !== modal.bidId));
         setModal({
           type: "deleteSuccess",
           message: "Bid deleted successfully!",
         });
+      } else {
+        setModal({
+          type: "error",
+          message: "Failed to delete bid!",
+        });
       }
     } catch (error) {
       console.error("Delete failed:", error.message);
+      setModal({
+        type: "error",
+        message: "Something went wrong!",
+      });
     }
   };
 
-  // ✅ Close Modal and Update UI if needed
+  //Modal and Update UI if needed
   const closeModal = () => {
     if (modal?.type === "success") {
       setBids((prev) =>
@@ -79,6 +90,13 @@ const MyBids = () => {
         )
       );
     }
+
+    //deleteSuccess modal
+    if (modal?.type === "deleteSuccess" || modal?.type === "error") {
+      setModal(null);
+      return;
+    }
+
     setModal(null);
   };
 
@@ -133,7 +151,7 @@ const MyBids = () => {
                         </p>
                       </td>
 
-                      {/* ✅ Status badge */}
+                      {/* Status badge */}
                       <td className="px-4 py-4 text-sm font-medium">
                         {bid.status === "In Progress" ? (
                           <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-blue-100/60 text-blue-500">
@@ -166,7 +184,7 @@ const MyBids = () => {
                         )}
                       </td>
 
-                      {/* ✅ Action Buttons */}
+                      {/* Action Buttons */}
                       <td className="px-4 py-4 text-sm whitespace-nowrap flex gap-4">
                         {/* Complete */}
                         <button
@@ -215,7 +233,7 @@ const MyBids = () => {
         </div>
       </div>
 
-      {/* ✅ Modal */}
+      {/*  Modal */}
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           {/* Success Modal */}

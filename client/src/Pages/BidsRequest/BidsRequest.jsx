@@ -20,7 +20,7 @@ const BidsRequest = () => {
     getData();
   }, [user]);
 
-  // ✅ Handle Accept
+  // Handle Accept
   const handleAccept = async (bid) => {
     if (bid.status === "In Progress" || bid?.status?.status === "In Progress") {
       setModal({
@@ -49,7 +49,7 @@ const BidsRequest = () => {
     }
   };
 
-  // ❌ Handle Reject
+  // Handle Reject
   const handleReject = async (bid) => {
     if (bid.status === "Rejected" || bid?.status?.status === "Rejected") {
       setModal({
