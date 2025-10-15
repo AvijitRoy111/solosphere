@@ -37,7 +37,7 @@ const BidsRequest = () => {
         { status: "In Progress" }
       );
 
-      if (data.modifiedCount > 0) {
+      if (data.data.modifiedCount > 0) {
         setModal({
           type: "success",
           message: "Your bid request updated successfully",
@@ -66,7 +66,7 @@ const BidsRequest = () => {
         { status: "Rejected" }
       );
 
-      if (data.modifiedCount > 0) {
+      if (data.data.modifiedCount > 0) {
         setModal({
           type: "reject",
           message: "Your bid request has been rejected",
