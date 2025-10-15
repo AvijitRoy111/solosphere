@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import axios from "axios";
 import { Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -26,10 +26,10 @@ const MyPostedJob = () => {
   const handleDelete = async () => {
     try {
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_api}/jobs/${selectedId}`, {withCredentials:true}
+        `${import.meta.env.VITE_api}/jobs/${selectedId}`
       );
 
-      if (data.deletedCount > 0) {
+      if (data.data.deletedCount > 0) {
         setJobs((prev) => prev.filter((job) => job._id !== selectedId));
         setShowConfirm(false);
         setShowSuccess(true);

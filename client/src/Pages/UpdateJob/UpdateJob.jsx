@@ -11,10 +11,12 @@ const UpdateJob = () => {
   const { user } = useContext(AuthContext);
 
   // destructure
-  const { _id, job_title, deadline, min_price, max_price, description, catagory } = updateJobs;
+  const { _id, job_title, deadline, min_price, max_price, description, catagory } = updateJobs.data;
 
   // convert deadline to Date
-  const [startDate, setStartDate] = useState(new Date(deadline));
+  const [startDate, setStartDate] = useState(
+  deadline ? new Date(deadline) : new Date()
+);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const handleUpdate = async (e) => {
@@ -34,7 +36,7 @@ const UpdateJob = () => {
     try {
       const { data } = await axios.put(
         `${import.meta.env.VITE_api}/jobs/${_id}`,
-        updatedJob, {withCredentials:true}
+        updatedJob, 
       );
 
       if (data.modifiedCount > 0) {
