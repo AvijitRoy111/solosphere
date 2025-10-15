@@ -17,8 +17,8 @@ const AllJobs = () => {
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios.get(`${import.meta.env.VITE_api}/jobs`);
-      setJobs(data);
-      setFilteredJobs(data);
+      setJobs(data.data);
+      setFilteredJobs(data.data);
     };
     getData();
   }, []);
@@ -29,12 +29,12 @@ const AllJobs = () => {
 
     // Category filter
     if (category) {
-      updatedJobs = updatedJobs.filter((job) => job?.catagory.toLowerCase() === category.toLowerCase());
+      updatedJobs = updatedJobs?.filter((job) => job?.catagory.toLowerCase() === category.toLowerCase());
     }
 
     // Search filter
     if (search) {
-      updatedJobs = updatedJobs.filter((job) =>
+      updatedJobs = updatedJobs?.filter((job) =>
         job?.job_title.toLowerCase().includes(search.toLowerCase())
       );
     }
