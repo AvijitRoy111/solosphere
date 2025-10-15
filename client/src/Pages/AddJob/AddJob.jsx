@@ -41,10 +41,10 @@ const AddJob = () => {
 
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_api}/jobs`,
-        jobData ,
+        `${import.meta.env.VITE_api}/jobs/jobs`,
+        jobData
       );
-      if (data.insertedId) {
+      if (data.data.insertedId) {
         setIsModalOpen(true);
       }
     } catch (error) {
