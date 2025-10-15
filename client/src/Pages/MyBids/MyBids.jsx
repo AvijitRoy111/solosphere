@@ -28,7 +28,7 @@ const MyBids = () => {
         { status: "Complete" }
       );
 
-      if (data.modifiedCount > 0) {
+      if (data.data.modifiedCount > 0) {
         setModal({
           type: "success",
           message: "Your bid has been marked as Complete ",
@@ -120,8 +120,8 @@ const MyBids = () => {
                             </h2>
                           </div>
                         ) : bid.status === "Complete" ? (
-                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-green-100/60 text-green-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                          <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-green-100/60 text-green-700">
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-700"></span>
                             <h2 className="text-sm font-normal">
                               {bid.status}
                             </h2>
@@ -144,7 +144,7 @@ const MyBids = () => {
                           disabled={bid.status !== "In Progress"}
                           className={`transition-colors duration-200 focus:outline-none ${
                             bid.status === "In Progress"
-                              ? "text-gray-500 hover:text-green-600"
+                              ? "text-green-500 hover:text-green-800"
                               : "text-gray-300 cursor-not-allowed"
                           }`}
                         >

@@ -40,10 +40,17 @@ const updateBidStatus = async (req, res) => {
   );
   res.status(200).json({ success: true, message: "Status updated", data: result });
 };
+// 6. Delete bid
+const deleteBid = async (req, res) => {
+  const id = req.params.id;
+  const result = await bidsCollection.deleteOne({ _id: new ObjectId(id) });
+  res.status(200).json({ success: true, message: "bid deleted", data: result });
+};
 
 module.exports = {
   createBid,
   getMyBids,
   getBidsRequest,
   updateBidStatus,
+  deleteBid
 };
