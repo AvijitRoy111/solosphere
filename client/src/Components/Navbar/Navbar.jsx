@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full navbar bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-12 lg:px-20 transition-colors duration-300">
+    <div className="w-full navbar bg-white fixed z-50 mb-20 dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-12 lg:px-20 transition-colors duration-300">
       {/* Left side */}
       <div className="flex-1">
         <div className="flex gap-2 items-center">
