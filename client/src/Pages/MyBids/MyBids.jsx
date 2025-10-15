@@ -58,7 +58,7 @@ const MyBids = () => {
         `${import.meta.env.VITE_api}/bids/${modal.bidId}`
       );
 
-      if (data.success) {
+      if (data.data.success) {
         setBids((prev) => prev.filter((b) => b._id !== modal.bidId));
         setModal({
           type: "deleteSuccess",
@@ -66,7 +66,7 @@ const MyBids = () => {
         });
       }
     } catch (error) {
-      console.error(error.message);
+      console.error("Delete failed:", error.message);
     }
   };
 
@@ -107,7 +107,9 @@ const MyBids = () => {
                     <th className="py-3.5 px-4 text-sm text-gray-500">
                       Category
                     </th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">Status</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
+                      Status
+                    </th>
                     <th className="py-3.5 px-4 text-sm text-gray-500">
                       Actions
                     </th>
@@ -199,7 +201,9 @@ const MyBids = () => {
                           title="Delete Bid"
                           className="text-red-500 hover:text-red-700 transition-colors duration-200"
                         >
-                          <span><RiDeleteBin6Line /></span>
+                          <span className="text-xl">
+                            <RiDeleteBin6Line />
+                          </span>
                         </button>
                       </td>
                     </tr>
