@@ -13,7 +13,7 @@ const AllJobs = () => {
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // all data
+  // Fetch data
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios.get(`${import.meta.env.VITE_api}/jobs`);
@@ -23,23 +23,22 @@ const AllJobs = () => {
     getData();
   }, []);
 
-  // 🔹 Filtering + Searching + Sorting handle
+  // Filter + Sort + Search
   useEffect(() => {
     let updatedJobs = [...jobs];
 
-    // Category filter
     if (category) {
-      updatedJobs = updatedJobs?.filter((job) => job?.catagory.toLowerCase() === category.toLowerCase());
-    }
-
-    // Search filter
-    if (search) {
-      updatedJobs = updatedJobs?.filter((job) =>
-        job?.job_title.toLowerCase().includes(search.toLowerCase())
+      updatedJobs = updatedJobs.filter(
+        (job) => job.catagory.toLowerCase() === category.toLowerCase()
       );
     }
 
-    // Sorting
+    if (search) {
+      updatedJobs = updatedJobs.filter((job) =>
+        job.job_title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
     if (sort === "asc") {
       updatedJobs = updatedJobs.sort(
         (a, b) => new Date(a.deadline) - new Date(b.deadline)
@@ -54,28 +53,34 @@ const AllJobs = () => {
     setCurrentPage(1);
   }, [category, search, sort, jobs]);
 
-  // 🔹 Pagination logic
+  // Pagination
   const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentJobs = filteredJobs.slice(indexOfFirst, indexOfLast);
 
-  //  Reset.....
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
   const handleReset = () => {
     setCategory("");
     setSearch("");
     setSort("");
-    setItemsPerPage(3);
+    setItemsPerPage(6);
     setCurrentPage(1);
     setFilteredJobs(jobs);
   };
 
   return (
     <div className="container px-6 py-10 mx-auto min-h-[calc(100vh-306px)] flex flex-col justify-between">
-      {/* Filter Section */}
+      {/* Filters */}
       <div>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-5 ">
-          {/* Category Filter */}
+        <div className="flex flex-col md:flex-row justify-center items-center gap-5">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -101,10 +106,9 @@ const AllJobs = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Enter Job Title"
               />
-
               <button
                 type="submit"
-                className="px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-blue-700 rounded-md hover:bg-blue-600"
+                className="px-4 py-3 text-sm font-medium text-gray-100 uppercase transition bg-blue-700 rounded-md hover:bg-blue-600"
               >
                 Search
               </button>
@@ -123,62 +127,136 @@ const AllJobs = () => {
           </select>
 
           {/* Reset */}
-          <button onClick={handleReset} className="btn bg-blue-700 py-3 px-4 rounded-md">
+          <button
+            onClick={handleReset}
+            className="bg-blue-700 text-white py-3 px-4 rounded-md hover:bg-blue-600"
+          >
             Reset
           </button>
         </div>
 
-        {/* Jobs List */}
-        <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 ">
+        {/* Jobs */}
+        <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3">
           {currentJobs.map((job) => (
             <Jobcard key={job._id} job={job} />
           ))}
         </div>
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-12">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => prev - 1)}
-          className="px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed hover:bg-blue-500 hover:text-white"
-        >
-          Previous
-        </button>
+      {/*  New Pagination (Mobile Friendly) */}
+      {filteredJobs.length > 0 && (
+        <div className="flex flex-col items-center justify-center mt-10 gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
+            {/* Prev Button */}
+            <button
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 text-sm rounded-md transition ${
+                currentPage === 1
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "text-blue-600 hover:bg-blue-100"
+              }`}
+            >
+              Prev
+            </button>
 
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((btnNum) => (
-          <button
-            key={btnNum}
-            onClick={() => setCurrentPage(btnNum)}
-            className={`px-4 py-2 mx-1 transition-colors duration-300 transform rounded-md ${
-              currentPage === btnNum
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 hover:bg-blue-500 hover:text-white"
-            }`}
-          >
-            {btnNum}
-          </button>
-        ))}
+            {/* Dynamic Page Numbers */}
+            {(() => {
+              const pages = [];
+              const maxVisible = 4;
+              let start = Math.max(1, currentPage - 2);
+              let end = Math.min(totalPages, start + maxVisible - 1);
 
-        {/* Items per page */}
-        <select
-          value={itemsPerPage}
-          onChange={(e) => setItemsPerPage(Number(e.target.value))}
-          className="bg-gray-50 border text-center px-2 mr-2 ml-2 rounded-md"
-        >
-          <option value="3">3 </option>
-          <option value="6">6 </option>
-          <option value="9">9</option>
-        </select>
+              if (end - start < maxVisible - 1) {
+                start = Math.max(1, end - maxVisible + 1);
+              }
 
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-          className="px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500"
-        >
-          Next
-        </button>
-      </div>
+              if (start > 1) {
+                pages.push(
+                  <button
+                    key={1}
+                    onClick={() => setCurrentPage(1)}
+                    className={`px-3 py-1 text-sm rounded-md ${
+                      currentPage === 1
+                        ? "bg-blue-600 text-white"
+                        : "text-blue-600 hover:bg-blue-100"
+                    }`}
+                  >
+                    1
+                  </button>
+                );
+                if (start > 2) pages.push(<span key="start-dots">…</span>);
+              }
+
+              for (let i = start; i <= end; i++) {
+                pages.push(
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(i)}
+                    className={`px-3 py-1 text-sm rounded-md ${
+                      currentPage === i
+                        ? "bg-blue-600 text-white"
+                        : "text-blue-600 hover:bg-blue-100"
+                    }`}
+                  >
+                    {i}
+                  </button>
+                );
+              }
+
+              if (end < totalPages) {
+                if (end < totalPages - 1)
+                  pages.push(<span key="end-dots">…</span>);
+                pages.push(
+                  <button
+                    key={totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                    className={`px-3 py-1 text-sm rounded-md ${
+                      currentPage === totalPages
+                        ? "bg-blue-600 text-white"
+                        : "text-blue-600 hover:bg-blue-100"
+                    }`}
+                  >
+                    {totalPages}
+                  </button>
+                );
+              }
+
+              return pages;
+            })()}
+
+            {/* Next Button */}
+            <button
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 text-sm rounded-md transition ${
+                currentPage === totalPages
+                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  : "text-blue-600 hover:bg-blue-100"
+              }`}
+            >
+              Next
+            </button>
+          </div>
+
+          {/* Jobs per page selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-gray-700 text-sm">Jobs per page:</span>
+            <select
+              className="border bg-white text-sm p-1.5 rounded-md"
+              value={itemsPerPage}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+            >
+              <option value={3}>3</option>
+              <option value={6}>6</option>
+              <option value={9}>9</option>
+            </select>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

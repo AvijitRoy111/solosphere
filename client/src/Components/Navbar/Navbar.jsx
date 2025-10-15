@@ -1,7 +1,7 @@
 import { useTheme } from "../hooks/useTheme";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Menu, X, User } from "lucide-react";
 import logo from "../../assets/images/logo.png";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,145 +9,304 @@ const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  //  Navigate to home after login
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleLogout = async () => {
     try {
       await logOut();
       navigate("/");
+      setShowDropdown(false);
     } catch (error) {
       console.error(error.message);
     }
   };
 
   return (
-    <div className="w-full navbar bg-white fixed z-50 mb-20 dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 px-4 md:px-12 lg:px-20 transition-colors duration-300">
-      {/* Left side */}
-      <div className="flex-1">
+    <nav className="w-full fixed z-50 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 transition-colors duration-300 px-4 md:px-12 lg:px-20">
+      <div className="flex justify-between items-center h-16">
+        {/*  Left: Logo */}
         <div className="flex gap-2 items-center">
-          <img
-            className="w-auto h-8 brightness-200"
-            src={logo}
-            alt="SoloSphere Logo"
-          />
+          <img className="w-auto h-8 brightness-200" src={logo} alt="Logo" />
           <span className="font-extrabold text-xl text-gray-900 dark:text-white">
             SoloSphere
           </span>
         </div>
+
+        {/*  Desktop Menu */}
+        <div className="hidden md:flex items-center gap-5">
+          <ul className="flex gap-4 text-gray-800 dark:text-gray-200 font-medium">
+            <li>
+              <Link
+                to="/"
+                className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/allJobs"
+                className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+              >
+                All Jobs
+              </Link>
+            </li>
+          </ul>
+
+          {/*  Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className={`p-2 rounded transition ${
+              theme === "light"
+                ? "hover:bg-gray-100 text-gray-700"
+                : "hover:bg-gray-700 text-yellow-400"
+            }`}
+          >
+            {theme === "light" ? (
+              <Moon className="w-5 h-5" />
+            ) : (
+              <Sun className="w-5 h-5" />
+            )}
+          </button>
+
+          {/*  User Icon / Dropdown */}
+          {user ? (
+            <div className="relative">
+              <div
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="cursor-pointer w-10 h-10 rounded-full overflow-hidden border-2 border-transparent hover:border-blue-500 transition"
+              >
+                <img
+                  src={user.photoURL}
+                  alt="User"
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              {/*  Dropdown */}
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-52 bg-white dark:bg-gray-800 shadow-lg rounded-md p-3 text-gray-800 dark:text-gray-100 z-50">
+                  <p className="text-sm font-semibold mb-2">
+                    {user.displayName || "User"}
+                  </p>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full bg-gray-200 dark:bg-gray-700 py-2 rounded hover:bg-blue-500 hover:text-white transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <User
+              className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+              onClick={() => navigate("/signIn")}
+            />
+          )}
+        </div>
+
+        {/* Mobile Right Side */}
+        <div className="md:hidden flex items-center gap-3">
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className={`p-2 rounded transition ${
+              theme === "light"
+                ? "text-gray-700 hover:bg-gray-100"
+                : "text-yellow-400 hover:bg-gray-700"
+            }`}
+          >
+            {theme === "light" ? (
+              <Moon className="w-5 h-5" />
+            ) : (
+              <Sun className="w-5 h-5" />
+            )}
+          </button>
+
+          {/* User Icon */}
+          {user ? (
+            <img
+              src={user.photoURL}
+              alt="User"
+              referrerPolicy="no-referrer"
+              className="w-8 h-8 rounded-full border cursor-pointer"
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+          ) : (
+            <User
+              className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+              onClick={() => navigate("/signIn")}
+            />
+          )}
+
+          {/* Menu Icon */}
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+          >
+            <Menu className="w-6 h-6 text-gray-900 dark:text-white" />
+          </button>
+        </div>
       </div>
 
-      {/* Right side */}
-      <div className="flex-none flex items-center gap-2 md:gap-4">
-        <ul className="menu menu-horizontal px-1 text-gray-800 dark:text-gray-200 gap-2">
-          {/* Home always visible */}
+      {/* Dropdown visible on mobile (when drawer closed) */}
+      {showDropdown && user && !menuOpen && (
+        <div className="absolute right-4 top-16 bg-white dark:bg-gray-800 shadow-lg rounded-md p-3 w-32 z-50">
+          <p className="text-sm text-center font-semibold text-gray-700 dark:text-gray-100 mb-2">
+            {user.displayName || "User"}
+          </p>
+          <button
+            onClick={handleLogout}
+            className="w-full bg-gray-200 dark:bg-gray-700 py-1 rounded hover:bg-blue-500 text-white hover:text-white transition"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+
+      {/* Mobile Drawer */}
+      <div
+        className={`fixed top-0 right-0 h-full w-72 bg-white dark:bg-gray-900 shadow-lg z-[100] transform transition-transform duration-300 ease-in-out ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-2">
+            {user ? (
+              <img
+                src={user.photoURL}
+                alt="User"
+                referrerPolicy="no-referrer"
+                className="w-8 h-8 rounded-full"
+              />
+            ) : (
+              <Link to="/signIn"><User className="w-6 h-6 text-gray-800 dark:text-white" /></Link>
+            )}
+            <button
+              onClick={toggleTheme}
+              className={`p-2 rounded transition ${
+                theme === "light"
+                  ? "text-gray-700 hover:bg-gray-100"
+                  : "text-yellow-400 hover:bg-gray-700"
+              }`}
+            >
+              {theme === "light" ? (
+                <Moon className="w-5 h-5" />
+              ) : (
+                <Sun className="w-5 h-5" />
+              )}
+            </button>
+          </div>
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          >
+            <X className="w-6 h-6 text-gray-800 dark:text-gray-200" />
+          </button>
+        </div>
+
+        <ul className="flex flex-col gap-4 mt-6 px-4 text-gray-800 dark:text-gray-200 font-medium">
           <li>
             <Link
               to="/"
-              className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+              onClick={() => setMenuOpen(false)}
+              className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
             >
               Home
             </Link>
           </li>
-
           <li>
             <Link
               to="/allJobs"
-              className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+              onClick={() => setMenuOpen(false)}
+              className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
             >
               All Jobs
             </Link>
           </li>
 
-          {/* Login only if NOT user */}
-          {!user && (
+          {user ? (
+            <>
+              <li>
+                <Link
+                  to="/add-job"
+                  onClick={() => setMenuOpen(false)}
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                >
+                  Add Job
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/my-posted-job"
+                  onClick={() => setMenuOpen(false)}
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                >
+                  My Posted Jobs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/my-bids"
+                  onClick={() => setMenuOpen(false)}
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                >
+                  My Bids
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/bids-request"
+                  onClick={() => setMenuOpen(false)}
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                >
+                  Bid Requests
+                </Link>
+              </li>
+              <li className="mt-2">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMenuOpen(false);
+                  }}
+                  className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white py-2 rounded hover:bg-blue-500 hover:text-white transition"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
             <li>
               <Link
                 to="/signIn"
-                className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
               >
                 Login
               </Link>
             </li>
           )}
         </ul>
-
-        {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          className="btn btn-ghost btn-circle p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
-        >
-          {theme === "light" ? (
-            <Moon className="w-5 h-5  text-white" />
-          ) : (
-            <Sun className="w-5 h-5 text-yellow-400" />
-          )}
-        </button>
-
-        {/* If user IS logged in */}
-        {user && (
-          <>
-            {/* Avatar dropdown */}
-            <div className="dropdown dropdown-end z-50">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar hover:ring-2 hover:ring-blue-500 dark:hover:ring-yellow-400 transition-all duration-200"
-              >
-                <div title={user?.displayName} className="w-10 rounded-full">
-                  <img
-                    referrerPolicy="no-referrer"
-                    alt="User Profile Photo"
-                    src={user?.photoURL}
-                  />
-                </div>
-              </div>
-
-              <ul className="menu menu-sm dropdown-content mt-3 -mr-10 z-[1] p-2 shadow-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-box w-52 transition-colors duration-300 ">
-                <li>
-                  <Link
-                    to="/add-job"
-                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
-                  >
-                    Add Job
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/my-posted-job"
-                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
-                  >
-                    My Posted Jobs
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/my-bids"
-                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
-                  >
-                    My Bids
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/bids-request"
-                    className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
-                  >
-                    Bid Requests
-                  </Link>
-                </li>
-                <li className="mt-2 w-full flex items-center justify-center">
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 rounded hover:bg-blue-500 dark:hover:bg-blue-600 hover:text-white text-center transition-colors duration-200"
-                  >
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </>
-        )}
       </div>
-    </div>
+
+      {/* Overlay */}
+      {menuOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-[99]"
+          onClick={() => setMenuOpen(false)}
+        ></div>
+      )}
+    </nav>
   );
 };
 
