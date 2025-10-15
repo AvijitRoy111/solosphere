@@ -39,7 +39,7 @@ const UpdateJob = () => {
         updatedJob, 
       );
 
-      if (data.modifiedCount > 0) {
+      if (data.data.modifiedCount > 0) {
         setShowSuccess(true);
       }
     } catch (error) {
