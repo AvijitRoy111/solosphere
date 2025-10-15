@@ -7,7 +7,7 @@ import axios from "axios";
 const TabCatagory = () => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [jobsPerPage, setJobsPerPage] = useState(3); // ✅ প্রতি পেইজে কয়টা job দেখাবে
+  const [jobsPerPage, setJobsPerPage] = useState(3);
 
   useEffect(() => {
     const getData = async () => {
@@ -17,20 +17,19 @@ const TabCatagory = () => {
     getData();
   }, []);
 
-  // ✅ Pagination Logic
+  //  Pagination Logic
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
 
-  // নির্দিষ্ট category এর job গুলো আলাদা ফাংশনে রাখছি
   const filterJobs = (category) =>
     jobs.filter((j) => j.catagory?.toLowerCase() === category.toLowerCase());
 
   const paginate = (array) => array.slice(indexOfFirstJob, indexOfLastJob);
 
-  // ✅ Total Pages (Dynamic)
+  // Total Pages (Dynamic)
   const totalPages = (totalJobs) => Math.ceil(totalJobs / jobsPerPage);
 
-  // ✅ Handle Page Change
+  // Handle Page Change
   const handlePrev = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -74,7 +73,7 @@ const TabCatagory = () => {
           </TabList>
         </div>
 
-        {/* ✅ Tab Panels */}
+        {/*  Tab Panels */}
         <div className="mt-8">
           {["Web Development", "Graphics Design", "Digital Marketing"].map(
             (category, index) => {
@@ -95,17 +94,17 @@ const TabCatagory = () => {
 
                   {/* Pagination Controls */}
                   {filtered.length > 0 && (
-                    <div className="flex flex-col items-center justify-center mt-8 gap-6">
-                      {/* Page Numbers */}
-                      <div className="flex flex-wrap items-center justify-center gap-2">
+                    <div className="flex flex-col items-center justify-center mt-8 gap-4">
+                      {/* Pagination Buttons */}
+                      <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
                         {/* Prev Button */}
                         <button
                           onClick={handlePrev}
                           disabled={currentPage === 1}
-                          className={`px-3 py-1 rounded-md ${
+                          className={`px-3 py-1 text-sm rounded-md transition ${
                             currentPage === 1
-                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                              : "bg-blue-600 text-white hover:bg-blue-500"
+                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                              : "text-blue-600 hover:bg-blue-100"
                           }`}
                         >
                           Prev
@@ -115,7 +114,7 @@ const TabCatagory = () => {
                         {(() => {
                           const pages = [];
                           const totalPageCount = total;
-                          const maxVisible = 5;
+                          const maxVisible = 4;
 
                           let start = Math.max(1, currentPage - 2);
                           let end = Math.min(
@@ -127,16 +126,16 @@ const TabCatagory = () => {
                             start = Math.max(1, end - maxVisible + 1);
                           }
 
-                          
+                          // First page
                           if (start > 1) {
                             pages.push(
                               <button
                                 key={1}
                                 onClick={() => setCurrentPage(1)}
-                                className={`px-3 py-1 rounded-md ${
+                                className={`px-3 py-1 text-sm rounded-md ${
                                   currentPage === 1
                                     ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 hover:bg-gray-200"
+                                    : "text-blue-600 hover:bg-blue-100"
                                 }`}
                               >
                                 1
@@ -144,20 +143,20 @@ const TabCatagory = () => {
                             );
 
                             if (start > 2) {
-                              pages.push(<span key="start-dots">...</span>);
+                              pages.push(<span key="start-dots">.....</span>);
                             }
                           }
 
-                         
+                          // Middle pages
                           for (let i = start; i <= end; i++) {
                             pages.push(
                               <button
                                 key={i}
                                 onClick={() => setCurrentPage(i)}
-                                className={`px-3 py-1 rounded-md ${
+                                className={`px-3 py-1 text-sm rounded-md ${
                                   currentPage === i
                                     ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 hover:bg-gray-200"
+                                    : "text-blue-600 hover:bg-blue-100"
                                 }`}
                               >
                                 {i}
@@ -165,20 +164,20 @@ const TabCatagory = () => {
                             );
                           }
 
-                     
+                          // Last page
                           if (end < totalPageCount) {
                             if (end < totalPageCount - 1) {
-                              pages.push(<span key="end-dots">...</span>);
+                              pages.push(<span key="end-dots">.....</span>);
                             }
 
                             pages.push(
                               <button
                                 key={totalPageCount}
                                 onClick={() => setCurrentPage(totalPageCount)}
-                                className={`px-3 py-1 rounded-md ${
+                                className={`px-3 py-1 text-sm rounded-md ${
                                   currentPage === totalPageCount
                                     ? "bg-blue-600 text-white"
-                                    : "bg-gray-100 hover:bg-gray-200"
+                                    : "text-blue-600 hover:bg-blue-100"
                                 }`}
                               >
                                 {totalPageCount}
@@ -189,11 +188,27 @@ const TabCatagory = () => {
                           return pages;
                         })()}
 
-                         {/* Jobs per page selector */}
+                        {/* Next Button */}
+                        <button
+                          onClick={() => handleNext(total)}
+                          disabled={currentPage === total}
+                          className={`px-3 py-1 text-sm rounded-md transition ${
+                            currentPage === total
+                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                              : "text-blue-600 hover:bg-blue-100"
+                          }`}
+                        >
+                          Next
+                        </button>
+                      </div>
+
+                      {/* Jobs per page selector */}
                       <div className="flex items-center gap-2">
-                        
+                        <span className="text-gray-700 text-sm">
+                          Jobs per page:
+                        </span>
                         <select
-                          className="border bg-white p-2 rounded-md"
+                          className="border bg-white text-sm p-1.5 rounded-md"
                           value={jobsPerPage}
                           onChange={(e) => {
                             setJobsPerPage(Number(e.target.value));
@@ -204,20 +219,6 @@ const TabCatagory = () => {
                           <option value={6}>6</option>
                           <option value={9}>9</option>
                         </select>
-                      </div>
-
-                        {/* Next Button */}
-                        <button
-                          onClick={() => handleNext(total)}
-                          disabled={currentPage === total}
-                          className={`px-3 py-1 rounded-md ${
-                            currentPage === total
-                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                              : "bg-blue-600 text-white hover:bg-blue-500"
-                          }`}
-                        >
-                          Next
-                        </button>
                       </div>
                     </div>
                   )}

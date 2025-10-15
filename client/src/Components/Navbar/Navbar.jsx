@@ -36,7 +36,7 @@ const Navbar = () => {
       </div>
 
       {/* Right side */}
-      <div className="flex-none flex items-center gap-4">
+      <div className="flex-none flex items-center gap-2 md:gap-4">
         <ul className="menu menu-horizontal px-1 text-gray-800 dark:text-gray-200 gap-2">
           {/* Home always visible */}
           <li>

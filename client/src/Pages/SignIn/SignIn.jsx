@@ -61,7 +61,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className=" flex justify-center items-center py-12 px-4 md:px-6 transition-colors duration-300">
+    <div className=" flex justify-center pt-20 items-center py-12 px-4 md:px-6 transition-colors duration-300">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-2xl lg:max-w-4xl transition-colors duration-300">
         {/* Left Image */}
         <div
