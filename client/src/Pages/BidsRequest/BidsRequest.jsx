@@ -1,6 +1,16 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
+import {
+  Check,
+  CheckCheck,
+  CheckCheckIcon,
+  ClipboardMinus,
+  OctagonX,
+  SquareX,
+  Trash,
+  X,
+} from "lucide-react";
 
 const BidsRequest = () => {
   const { user } = useContext(AuthContext);
@@ -226,8 +236,8 @@ const BidsRequest = () => {
                   <td className="px-4 py-4 text-sm text-gray-500">
                     {bid.price}
                   </td>
-                  <td className="px-4 py-4 text-sm">
-                    <p className="text-center px-3 py-1 rounded-full text-blue-500 bg-blue-100/60 text-xs">
+                  <td className="px-2 py-4 text-sm">
+                    <p className="text-center px-1 py-1 rounded-full text-white bg-blue-600 text-xs">
                       {bid.catagory}
                     </p>
                   </td>
@@ -238,14 +248,14 @@ const BidsRequest = () => {
                         <h2 className="text-sm font-normal">In Progress</h2>
                       </div>
                     ) : bid.status === "Rejected" ? (
-                      <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-red-100/60 text-red-500">
-                        <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+                      <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-red-100/60 text-red-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
                         <h2 className="text-sm font-normal">Rejected</h2>
                       </div>
                     ) : (
-                      <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
-                        <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
-                        <h2 className="text-sm font-normal">Pending</h2>
+                      <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-yellow-600"></span>
+                        <h2 className="text-sm font-normal ">Pending</h2>
                       </div>
                     )}
                   </td>
@@ -255,19 +265,26 @@ const BidsRequest = () => {
                         onClick={() => handleAccept(bid)}
                         title="Mark as In Progress"
                       >
-                        ✅
+                        <span className="text-xl font-bold text-green-600">
+                          {" "}
+                          <CheckCheck />
+                        </span>
                       </button>
                       <button
                         onClick={() => handleReject(bid)}
                         title="Reject Bid"
                       >
-                        ❌
+                        <span className="text-xl font-bold text-red-600">
+                          <SquareX />
+                        </span>
                       </button>
                       <button
                         onClick={() => handleDelete(bid)}
                         title="Delete Bid"
                       >
-                        🗑️
+                        <span className="text-xl font-bold text-red-600">
+                          <Trash />
+                        </span>
                       </button>
                     </div>
                   </td>
@@ -332,19 +349,26 @@ const BidsRequest = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
             {modal.type === "deleteConfirm" && (
-              <div>
-                <div className="text-red-500 text-5xl mb-4">⚠️</div>
+              <div className="flex flex-col items-center justify-center text-center ">
+                {/* Icon Section */}
+                <div className="flex items-center justify-center bg-red-600 text-white w-24 h-24 rounded-full mb-2">
+                  <ClipboardMinus size={60} />
+                </div>
+
+                {/* Message */}
                 <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
+
+                {/* Buttons */}
                 <div className="flex justify-center gap-4 mt-4">
                   <button
                     onClick={confirmDelete}
-                    className="px-6 py-2 bg-red-500  rounded-md hover:bg-red-600"
+                    className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
                   >
                     Confirm
                   </button>
                   <button
                     onClick={closeModal}
-                    className="px-6 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                    className="px-6 py-2 bg-gray-300 rounded-md hover:bg-gray-400 transition"
                   >
                     Cancel
                   </button>
@@ -356,31 +380,39 @@ const BidsRequest = () => {
             {["deleteSuccess", "success", "reject", "failed"].includes(
               modal.type
             ) && (
-              <div>
+              <div className="flex flex-col items-center justify-center text-center ">
+                {/* Icon */}
                 <div
-                  className={`text-5xl mb-4 ${
+                  className={`flex items-center justify-center w-24 h-24 rounded-full mb-4 ${
                     modal.type === "success" || modal.type === "deleteSuccess"
-                      ? "text-green-500"
+                      ? "bg-green-100 text-green-500"
                       : modal.type === "reject"
-                      ? "text-red-500"
-                      : "text-yellow-500"
+                      ? "bg-red-100 text-red-500"
+                      : "bg-yellow-100 text-yellow-500"
                   }`}
                 >
-                  {modal.type === "success" || modal.type === "deleteSuccess"
-                    ? "✔️"
-                    : modal.type === "reject"
-                    ? "❌"
-                    : "⚠️"}
+                  {modal.type === "success" ||
+                  modal.type === "deleteSuccess" ? (
+                    <CheckCheck size={60} />
+                  ) : modal.type === "reject" ? (
+                    <X size={60}/>
+                  ) : (
+                    <OctagonX  size={60}/>
+                  )}
                 </div>
+
+                {/* Message */}
                 <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
+
+                {/* Close Button */}
                 <button
                   onClick={closeModal}
-                  className={`mt-4 px-6 py-2 rounded-md  ${
+                  className={`mt-4 px-6 py-2 rounded-md transition ${
                     modal.type === "success" || modal.type === "deleteSuccess"
-                      ? "bg-green-500 hover:bg-green-600"
+                      ? "bg-green-600 hover:bg-green-700 text-white"
                       : modal.type === "reject"
-                      ? "bg-red-500 hover:bg-red-600"
-                      : "bg-yellow-500 hover:bg-yellow-600"
+                      ? "bg-red-500 hover:bg-red-600 text-white"
+                      : "bg-yellow-500 hover:bg-yellow-600 text-white"
                   }`}
                 >
                   Close
