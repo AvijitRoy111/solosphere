@@ -194,7 +194,7 @@ const JobDetails = () => {
           <div className="flex justify-end mt-6">
             <button
               type="submit"
-              className="px-8 py-2.5 leading-5   duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+              className="px-8 py-2.5 leading-5 text-white  duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
             >
               Place Bid
             </button>
@@ -233,7 +233,7 @@ const JobDetails = () => {
             {/* Close Button */}
             <button
               onClick={() => setIsModalOpen(false)}
-              className="mt-6 px-6 py-2 bg-blue-600  rounded-md hover:bg-blue-700 transition"
+              className="mt-6 px-6 py-2 text-white bg-blue-600  rounded-md hover:bg-blue-700 transition"
             >
               Close
             </button>

@@ -164,15 +164,22 @@ const UpdateJob = () => {
 
       {/* Success Modal */}
       {showSuccess && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white p-6 rounded-xl shadow-lg text-center max-w-sm">
-            <div className="text-green-500 text-4xl bg-green-100 p-4 w-24 h-24 rounded-full mb-3"><CheckCheck size={60}/></div>
-            <h3 className="text-lg font-semibold mb-2">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full animate-fadeIn">
+            {/* Icon */}
+            <div className="flex items-center justify-center mx-auto bg-green-100 text-green-500 w-24 h-24 rounded-full mb-4">
+              <CheckCheck size={60} />
+            </div>
+
+            {/* Message */}
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">
               Your job data updated successfully
             </h3>
+
+            {/* Button */}
             <button
               onClick={handleCloseModal}
-              className="mt-4 px-4 py-2 text-white bg-green-600  rounded-lg"
+              className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
             >
               Close
             </button>
