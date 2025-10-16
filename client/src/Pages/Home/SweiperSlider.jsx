@@ -61,16 +61,25 @@ const SweiperSlider = () => {
 
               {/* Content */}
               <div className="absolute inset-0 flex flex-col items-center justify-center  text-center px-6">
-                <h2 className="text-4xl font-bold text-white mb-4">{slide.title}</h2>
+                <h2 className="text-4xl font-bold text-white mb-4">
+                  {slide.title}
+                </h2>
                 <p className="mb-6 text-white">{slide.desc}</p>
                 <div className="flex gap-4 justify-center">
-                  <li><a href="TabCatagory"><button className="px-6 py-2 bg-blue-700 text-white rounded-lg shadow hover:bg-primary/80 transition">
+                  <button
+                    onClick={() => {
+                      const section = document.getElementById("tab-category");
+                      section?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="px-6 py-2 bg-blue-700 text-white rounded-lg shadow hover:bg-primary/80 transition"
+                  >
                     Explore
-                  </button></a></li>
-                  <Link to="/allJobs"><button className="px-6 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-200 transition">
-                    See More ...
-                  </button></Link>
-                  
+                  </button>
+                  <Link to="/allJobs">
+                    <button className="px-6 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-200 transition">
+                      See More ...
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
