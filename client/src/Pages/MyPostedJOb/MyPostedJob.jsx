@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import axios from "axios";
-import { Trash } from "lucide-react";
+import { CheckCheck, ClipboardMinus, FilePenLine, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const MyPostedJob = () => {
@@ -130,7 +130,7 @@ const MyPostedJob = () => {
                         ${job.min_price}-{job.max_price}
                       </td>
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
-                        <span className="px-3 py-1 rounded-full text-blue-500 bg-blue-100/60 text-xs">
+                        <span className="px-3 py-1 rounded-full text-white bg-blue-600 text-xs">
                           {job.catagory}
                         </span>
                       </td>
@@ -144,13 +144,13 @@ const MyPostedJob = () => {
                               setSelectedId(job._id);
                               setShowConfirm(true);
                             }}
-                            className="text-gray-500 hover:text-red-500 transition"
+                            className="text-red-500  hover:text-red-600 transition"
                           >
-                            <Trash size={18} />
+                            <ClipboardMinus size={25}/>
                           </button>
                           <Link to={`/updateJob/${job._id}`}>
                             <button className="text-gray-500 hover:text-yellow-500 transition">
-                              ✏️
+                              <FilePenLine />
                             </button>
                           </Link>
                         </div>
@@ -239,8 +239,8 @@ const MyPostedJob = () => {
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40">
           <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-            <div className="text-red-500 text-6xl mb-4">
-              <Trash className="inline" />
+            <div className="text-red-500  bg-red-100 rounded-full p-4 w-24 h-24 text-6xl mb-4">
+              <Trash size={60} />
             </div>
             <h3 className="text-lg font-semibold mb-2">Are you sure?</h3>
             <p className="text-gray-600 mb-4">
@@ -255,7 +255,7 @@ const MyPostedJob = () => {
               </button>
               <button
                 onClick={handleDelete}
-                className="px-6 py-2 bg-red-500  rounded-md hover:bg-red-600"
+                className="px-6 py-2 text-white bg-red-500  rounded-md hover:bg-red-600"
               >
                 Delete
               </button>
@@ -267,7 +267,7 @@ const MyPostedJob = () => {
       {showSuccess && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40">
           <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-            <div className="text-green-500 text-5xl mb-4">✅</div>
+            <div className="text-green-500 text-5xl mb-4 bg-green-100 rounded-full p-4 w-24 h-24"><CheckCheck size={60}/></div>
             <h3 className="text-lg font-semibold mb-2">
               Job deleted successfully!
             </h3>

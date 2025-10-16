@@ -2,6 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import {
+  BookmarkCheck,
+  CheckCheck,
+  CircleCheckBig,
+  OctagonAlert,
+  Trash,
+} from "lucide-react";
 
 const MyBids = () => {
   const { user } = useContext(AuthContext);
@@ -155,8 +162,8 @@ const MyBids = () => {
                       <td className="px-4 py-4 text-sm text-gray-500">
                         ${bid.price}
                       </td>
-                      <td className="px-4 py-4 text-sm">
-                        <p className="px-3 py-1 rounded-full text-blue-500 bg-blue-100/60 text-xs">
+                      <td className="px-1 py-4 text-sm">
+                        <p className=" py-1 rounded-full text-center text-white bg-blue-600 text-xs">
                           {bid.catagory}
                         </p>
                       </td>
@@ -194,7 +201,7 @@ const MyBids = () => {
                               : "text-gray-300 cursor-not-allowed"
                           }`}
                         >
-                          ✅
+                          <BookmarkCheck size={25} />
                         </button>
 
                         <button
@@ -202,7 +209,7 @@ const MyBids = () => {
                           title="Delete Bid"
                           className="text-red-500 hover:text-red-700 transition"
                         >
-                          <RiDeleteBin6Line className="text-xl" />
+                          <Trash size={25} />
                         </button>
                       </td>
                     </tr>
@@ -333,35 +340,57 @@ const MyBids = () => {
       {modal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           {(modal.type === "success" || modal.type === "deleteSuccess") && (
-            <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-              <div className="text-green-500 text-5xl mb-4">✔️</div>
-              <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
-              <button
-                onClick={closeModal}
-                className="mt-4 px-6 py-2 bg-green-500  rounded-md hover:bg-green-600"
-              >
-                Close
-              </button>
+            <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+              <div className="bg-white p-8 rounded-2xl shadow-2xl text-center w-96 animate-fadeIn">
+                {/* Icon (fully centered inside circle) */}
+                <div className="flex items-center justify-center mx-auto bg-green-100 rounded-full w-24 h-24 mb-4">
+                  <CheckCheck size={60} className="text-green-600" />
+                </div>
+
+                {/* Message */}
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">
+                  {modal.message}
+                </h3>
+
+                {/* Button */}
+                <button
+                  onClick={closeModal}
+                  className="mt-4 px-6 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 transition"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           )}
 
           {modal.type === "deleteConfirm" && (
-            <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-              <div className="text-red-500 text-5xl mb-4">⚠️</div>
-              <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
-              <div className="flex justify-center gap-4 mt-4">
-                <button
-                  onClick={confirmDelete}
-                  className="px-6 py-2 bg-red-500  rounded-md hover:bg-red-600"
-                >
-                  Confirm
-                </button>
-                <button
-                  onClick={closeModal}
-                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
+            <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+              <div className="bg-white p-8 rounded-2xl shadow-2xl text-center w-96 animate-fadeIn">
+                {/* Icon */}
+                <div className="flex items-center justify-center mx-auto bg-red-100 text-red-500 rounded-full w-24 h-24 mb-4">
+                  <OctagonAlert size={60} />
+                </div>
+
+                {/* Message */}
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">
+                  {modal.message}
+                </h3>
+
+                {/* Buttons */}
+                <div className="flex justify-center gap-4 mt-4">
+                  <button
+                    onClick={confirmDelete}
+                    className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
           )}
