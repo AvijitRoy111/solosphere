@@ -4,10 +4,10 @@ import SweiperSlider from "./SweiperSlider";
 
 const Home = () => {
   return (
-    <div className="w-full mt-2 px-4 md:px-12 lg:px-20">
+    <div className="w-full pt-2 px-4  md:px-12 lg:px-20">
       <SweiperSlider></SweiperSlider>
       <section id="tab-category" className="mt-10">
-        <TabCategory />
+        <TabCatagory/>
       </section>
     </div>
   );

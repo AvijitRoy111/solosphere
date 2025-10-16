@@ -38,7 +38,7 @@ const TabCatagory = () => {
   };
 
   return (
-    <div className="mt-20">
+    <div className="mt-20 b-2">
       <div className="flex flex-col items-center justify-center gap-4 mb-16">
         <h1 className="text-4xl font-bold text-center">
           Browse Job By Category
@@ -103,7 +103,7 @@ const TabCatagory = () => {
                           disabled={currentPage === 1}
                           className={`px-3 py-1 text-sm rounded-md transition ${
                             currentPage === 1
-                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                              ? "bg-gray-200  cursor-not-allowed"
                               : "text-blue-600 hover:bg-blue-100"
                           }`}
                         >
@@ -194,8 +194,8 @@ const TabCatagory = () => {
                           disabled={currentPage === total}
                           className={`px-3 py-1 text-sm rounded-md transition ${
                             currentPage === total
-                              ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                              : "text-blue-600 hover:bg-blue-100"
+                              ? "bg-gray-200 text-gray-700 cursor-not-allowed"
+                              : "text-blue-700 hover:bg-blue-100"
                           }`}
                         >
                           Next
@@ -204,11 +204,11 @@ const TabCatagory = () => {
 
                       {/* Jobs per page selector */}
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-700 text-sm">
+                        <span className=" text-sm">
                           Jobs per page:
                         </span>
                         <select
-                          className="border bg-white text-sm p-1.5 rounded-md"
+                          className="border bg-white text-sm text-white dark:text-black p-1.5 rounded-md"
                           value={jobsPerPage}
                           onChange={(e) => {
                             setJobsPerPage(Number(e.target.value));

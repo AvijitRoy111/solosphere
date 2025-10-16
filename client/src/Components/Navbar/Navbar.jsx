@@ -40,7 +40,7 @@ const Navbar = () => {
         {/* Left: Logo */}
         <div className="flex gap-2 items-center">
           <img className="w-auto h-8 brightness-200" src={logo} alt="Logo" />
-          <span className="font-extrabold text-xl text-gray-900 dark:">
+          <span className="font-extrabold text-xl text-white">
             SoloSphere
           </span>
         </div>
