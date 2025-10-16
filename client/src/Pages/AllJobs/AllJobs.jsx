@@ -84,7 +84,7 @@ const AllJobs = () => {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="bg-gray-50 border p-4 rounded-lg"
+            className="bg-gray-50 text-black border p-4 rounded-lg"
           >
             <option value="">Filter By Category</option>
             <option value="Web Development">Web Development</option>
@@ -100,7 +100,7 @@ const AllJobs = () => {
           >
             <div className="flex p-1 overflow-hidden border rounded-lg focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300">
               <input
-                className="px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none"
+                className="px-6 py-2 text-gray-800 placeholder-gray-500 bg-white outline-none"
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -119,7 +119,7 @@ const AllJobs = () => {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="bg-gray-50 border p-4 rounded-md"
+            className="bg-gray-50 text-black border p-4 rounded-md"
           >
             <option value="">Sort By Deadline</option>
             <option value="dsc">Descending Order</option>
@@ -129,7 +129,7 @@ const AllJobs = () => {
           {/* Reset */}
           <button
             onClick={handleReset}
-            className="bg-blue-700  py-3 px-4 rounded-md hover:bg-blue-600"
+            className="bg-blue-700 text-white  py-3 px-4 rounded-md hover:bg-blue-600"
           >
             Reset
           </button>
@@ -241,9 +241,9 @@ const AllJobs = () => {
 
           {/* Jobs per page selector */}
           <div className="flex items-center gap-2">
-            <span className="text-gray-700 text-sm">Jobs per page:</span>
+            <span className="text-gray-700 dark:text-white text-sm">Jobs per page:</span>
             <select
-              className="border bg-white text-sm p-1.5 rounded-md"
+              className="border bg-white text-sm text-black p-1.5 rounded-md"
               value={itemsPerPage}
               onChange={(e) => {
                 setItemsPerPage(Number(e.target.value));
