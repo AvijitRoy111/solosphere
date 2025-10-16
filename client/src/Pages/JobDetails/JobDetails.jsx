@@ -96,7 +96,7 @@ const JobDetails = () => {
           <span className="text-sm font-light text-gray-800 ">
             Deadline: {deadline}
           </span>
-          <span className="px-4 py-1 text-xs  font-bold uppercase bg-blue-700 rounded-full ">
+          <span className="px-4 py-1 text-xs text-white font-bold uppercase bg-blue-700 rounded-full ">
             {catagory}
           </span>
         </div>
