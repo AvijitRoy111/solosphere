@@ -81,9 +81,7 @@ const MyPostedJob = () => {
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
-        <h2 className="text-lg font-medium  "> 
-          My Posted Jobs
-        </h2>
+        <h2 className="text-lg font-medium  ">My Posted Jobs</h2>
         <span className="px-3 py-2 text-base font-bold  text-white bg-blue-600 rounded-full">
           {jobs.length} Jobs
         </span>
@@ -146,7 +144,7 @@ const MyPostedJob = () => {
                             }}
                             className="text-red-500  hover:text-red-600 transition"
                           >
-                            <ClipboardMinus size={25}/>
+                            <ClipboardMinus size={25} />
                           </button>
                           <Link to={`/updateJob/${job._id}`}>
                             <button className="text-gray-500 hover:text-yellow-500 transition">
@@ -237,25 +235,34 @@ const MyPostedJob = () => {
 
       {/* Delete Modals */}
       {showConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40">
-          <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-            <div className="text-red-500  bg-red-100 rounded-full p-4 w-24 h-24 text-6xl mb-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl text-center w-96 animate-fadeIn">
+            {/* Icon */}
+            <div className="flex items-center justify-center mx-auto bg-red-100 text-red-500 rounded-full w-24 h-24 mb-4">
               <Trash size={60} />
             </div>
-            <h3 className="text-lg font-semibold mb-2">Are you sure?</h3>
+
+            {/* Heading */}
+            <h3 className="text-lg font-semibold mb-2 text-gray-800">
+              Are you sure?
+            </h3>
+
+            {/* Message */}
             <p className="text-gray-600 mb-4">
               Do you really want to delete this job?
             </p>
-            <div className="flex justify-center gap-4">
+
+            {/* Buttons */}
+            <div className="flex justify-center gap-4 mt-4">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="px-6 py-2 bg-gray-300 rounded-md"
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-6 py-2 text-white bg-red-500  rounded-md hover:bg-red-600"
+                className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
               >
                 Delete
               </button>
@@ -265,15 +272,22 @@ const MyPostedJob = () => {
       )}
 
       {showSuccess && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40">
-          <div className="bg-white p-6 rounded-lg shadow-xl text-center w-96">
-            <div className="text-green-500 text-5xl mb-4 bg-green-100 rounded-full p-4 w-24 h-24"><CheckCheck size={60}/></div>
-            <h3 className="text-lg font-semibold mb-2">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-2xl text-center w-96 animate-fadeIn">
+            {/* Icon */}
+            <div className="flex items-center justify-center mx-auto bg-green-100 text-green-500 rounded-full w-24 h-24 mb-4">
+              <CheckCheck size={60} />
+            </div>
+
+            {/* Message */}
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">
               Job deleted successfully!
             </h3>
+
+            {/* Button */}
             <button
               onClick={() => setShowSuccess(false)}
-              className="mt-4 px-6 py-2 bg-green-500  rounded-md hover:bg-green-600"
+              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
             >
               Close
             </button>

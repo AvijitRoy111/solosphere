@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../../Components/AuthProvider/AuthProvider";
 import axios from "axios";
+import { CheckCheck } from "lucide-react";
 
 const UpdateJob = () => {
   const updateJobs = useLoaderData();
@@ -153,7 +154,7 @@ const UpdateJob = () => {
           <div className="flex justify-end mt-6">
             <button
               type="submit"
-              className="px-8 py-2.5 leading-5  bg-gray-700 rounded-md hover:bg-gray-600"
+              className="px-8 py-2.5 leading-5 text-white  bg-gray-700 rounded-md hover:bg-gray-600"
             >
               Update
             </button>
@@ -165,13 +166,13 @@ const UpdateJob = () => {
       {showSuccess && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
           <div className="bg-white p-6 rounded-xl shadow-lg text-center max-w-sm">
-            <div className="text-green-500 text-4xl mb-3">✅</div>
+            <div className="text-green-500 text-4xl bg-green-100 p-4 w-24 h-24 rounded-full mb-3"><CheckCheck size={60}/></div>
             <h3 className="text-lg font-semibold mb-2">
               Your job data updated successfully
             </h3>
             <button
               onClick={handleCloseModal}
-              className="mt-4 px-4 py-2 bg-green-500  rounded-lg"
+              className="mt-4 px-4 py-2 text-white bg-green-600  rounded-lg"
             >
               Close
             </button>
