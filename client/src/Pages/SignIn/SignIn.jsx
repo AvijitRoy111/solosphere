@@ -61,8 +61,8 @@ const SignIn = () => {
   };
 
   return (
-    <div className=" flex justify-center pt-20 items-center py-12 px-4 md:px-6 transition-colors duration-300">
-      <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-2xl lg:max-w-4xl transition-colors duration-300">
+    <div className=" flex justify-center pt-20 items-center py-12 px-4 md:px-6  duration-300">
+      <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white dark:bg-gray-800 rounded-2xl shadow-2xl lg:max-w-4xl  duration-300">
         {/* Left Image */}
         <div
           className="hidden bg-cover bg-center lg:block lg:w-1/2"
@@ -89,7 +89,7 @@ const SignIn = () => {
           {/* Google Sign-In */}
           <div
             onClick={handleSignInWithGoogle}
-            className="flex cursor-pointer items-center justify-center mt-4 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
+            className="flex cursor-pointer items-center justify-center mt-4 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700  duration-300"
           >
             <div className="px-4 py-2">
               <svg className="w-6 h-6" viewBox="0 0 40 40">
@@ -139,7 +139,7 @@ const SignIn = () => {
                 name="email"
                 type="email"
                 autoComplete="email"
-                className="block w-full px-4 py-2 text-black bg-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none transition-colors duration-300"
+                className="block w-full px-4 py-2  bg-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none  duration-300"
               />
             </div>
 
@@ -155,7 +155,7 @@ const SignIn = () => {
                 name="password"
                 type={showPassword ? "password" : "text"}
                 autoComplete="current-password"
-                className="block w-full px-4 py-2 text-black  bg-gray-300    border border-gray-300 dark:border-gray-600 rounded-lg focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none transition-colors duration-300"
+                className="block w-full px-4 py-2   bg-gray-300    border border-gray-300 dark:border-gray-600 rounded-lg focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none  duration-300"
               />
               <span
                 className="absolute bottom-2 right-3"
@@ -168,7 +168,7 @@ const SignIn = () => {
             </div>
 
             <div className="mt-6">
-              <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 dark:bg-gray-700 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+              <button className="w-full px-6 py-3 text-sm font-medium tracking-wide  capitalize  duration-300 transform bg-gray-800 dark:bg-gray-700 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50">
                 Sign In
               </button>
             </div>

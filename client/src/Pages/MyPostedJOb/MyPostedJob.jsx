@@ -94,12 +94,24 @@ const MyPostedJob = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">Title</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">Deadline</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">Price Range</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">Category</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">Description</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">Edit</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">
+                      Title
+                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">
+                      Deadline
+                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">
+                      Price Range
+                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">
+                      Category
+                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">
+                      Description
+                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500 text-left">
+                      Edit
+                    </th>
                   </tr>
                 </thead>
 
@@ -157,7 +169,7 @@ const MyPostedJob = () => {
                     className={`px-4 py-2 rounded-md ${
                       currentPage === 1
                         ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        : "bg-blue-600 text-white hover:bg-blue-500"
+                        : "bg-blue-600  hover:bg-blue-500"
                     }`}
                   >
                     Prev
@@ -171,7 +183,7 @@ const MyPostedJob = () => {
                         onClick={() => handlePageClick(page)}
                         className={`px-3 py-1 rounded-md ${
                           currentPage === page
-                            ? "bg-blue-600 text-white"
+                            ? "bg-blue-600 "
                             : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                         }`}
                       >
@@ -190,7 +202,7 @@ const MyPostedJob = () => {
                     className={`px-4 py-2 rounded-md ${
                       currentPage === totalPages
                         ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        : "bg-blue-600 text-white hover:bg-blue-500"
+                        : "bg-blue-600  hover:bg-blue-500"
                     }`}
                   >
                     Next
@@ -239,7 +251,7 @@ const MyPostedJob = () => {
               </button>
               <button
                 onClick={handleDelete}
-                className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                className="px-6 py-2 bg-red-500  rounded-md hover:bg-red-600"
               >
                 Delete
               </button>
@@ -257,7 +269,7 @@ const MyPostedJob = () => {
             </h3>
             <button
               onClick={() => setShowSuccess(false)}
-              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              className="mt-4 px-6 py-2 bg-green-500  rounded-md hover:bg-green-600"
             >
               Close
             </button>

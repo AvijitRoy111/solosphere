@@ -134,7 +134,7 @@ const TabCatagory = () => {
                                 onClick={() => setCurrentPage(1)}
                                 className={`px-3 py-1 text-sm rounded-md ${
                                   currentPage === 1
-                                    ? "bg-blue-600 text-white"
+                                    ? "bg-blue-600 "
                                     : "text-blue-600 hover:bg-blue-100"
                                 }`}
                               >
@@ -155,7 +155,7 @@ const TabCatagory = () => {
                                 onClick={() => setCurrentPage(i)}
                                 className={`px-3 py-1 text-sm rounded-md ${
                                   currentPage === i
-                                    ? "bg-blue-600 text-white"
+                                    ? "bg-blue-600 "
                                     : "text-blue-600 hover:bg-blue-100"
                                 }`}
                               >
@@ -176,7 +176,7 @@ const TabCatagory = () => {
                                 onClick={() => setCurrentPage(totalPageCount)}
                                 className={`px-3 py-1 text-sm rounded-md ${
                                   currentPage === totalPageCount
-                                    ? "bg-blue-600 text-white"
+                                    ? "bg-blue-600 "
                                     : "text-blue-600 hover:bg-blue-100"
                                 }`}
                               >

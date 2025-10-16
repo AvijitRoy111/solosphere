@@ -129,7 +129,7 @@ const AllJobs = () => {
           {/* Reset */}
           <button
             onClick={handleReset}
-            className="bg-blue-700 text-white py-3 px-4 rounded-md hover:bg-blue-600"
+            className="bg-blue-700  py-3 px-4 rounded-md hover:bg-blue-600"
           >
             Reset
           </button>
@@ -178,7 +178,7 @@ const AllJobs = () => {
                     onClick={() => setCurrentPage(1)}
                     className={`px-3 py-1 text-sm rounded-md ${
                       currentPage === 1
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-600 "
                         : "text-blue-600 hover:bg-blue-100"
                     }`}
                   >
@@ -195,7 +195,7 @@ const AllJobs = () => {
                     onClick={() => setCurrentPage(i)}
                     className={`px-3 py-1 text-sm rounded-md ${
                       currentPage === i
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-600 "
                         : "text-blue-600 hover:bg-blue-100"
                     }`}
                   >
@@ -213,7 +213,7 @@ const AllJobs = () => {
                     onClick={() => setCurrentPage(totalPages)}
                     className={`px-3 py-1 text-sm rounded-md ${
                       currentPage === totalPages
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-600 "
                         : "text-blue-600 hover:bg-blue-100"
                     }`}
                   >

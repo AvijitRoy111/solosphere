@@ -26,7 +26,8 @@ const BidsRequest = () => {
   const currentBids = bidRequest.slice(startIndex, startIndex + bidsPerPage);
 
   const handlePageChange = (page) => setCurrentPage(page);
-  const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const handleNext = () =>
+    currentPage < totalPages && setCurrentPage(currentPage + 1);
   const handlePrev = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
   // Handle Accept
@@ -145,22 +146,39 @@ const BidsRequest = () => {
       if (currentPage <= 3) {
         pages.push(1, 2, 3, 4, "...", totalPages);
       } else if (currentPage >= totalPages - 2) {
-        pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+        pages.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
       } else {
-        pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+        pages.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages
+        );
       }
     }
 
     return pages.map((num, i) =>
       num === "..." ? (
-        <span key={i} className="px-3 py-1 text-gray-500">...</span>
+        <span key={i} className="px-3 py-1 text-gray-500">
+          ...
+        </span>
       ) : (
         <button
           key={num}
           onClick={() => handlePageChange(num)}
           className={`px-3 py-1 rounded-md text-sm font-medium ${
             currentPage === num
-              ? "bg-blue-600 text-white"
+              ? "bg-blue-600 "
               : "bg-gray-200 text-gray-800 hover:bg-gray-300"
           }`}
         >
@@ -196,12 +214,18 @@ const BidsRequest = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {currentBids.map((bid) => (
                 <tr key={bid._id}>
-                  <td className="px-4 py-4 text-sm text-gray-500">{bid.job_title}</td>
-                  <td className="px-4 py-4 text-sm text-gray-500">{bid.buyer_email}</td>
+                  <td className="px-4 py-4 text-sm text-gray-500">
+                    {bid.job_title}
+                  </td>
+                  <td className="px-4 py-4 text-sm text-gray-500">
+                    {bid.buyer_email}
+                  </td>
                   <td className="px-4 py-4 text-sm text-gray-500">
                     {new Date(bid.deadline).toLocaleDateString()}
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-500">{bid.price}</td>
+                  <td className="px-4 py-4 text-sm text-gray-500">
+                    {bid.price}
+                  </td>
                   <td className="px-4 py-4 text-sm">
                     <p className="text-center px-3 py-1 rounded-full text-blue-500 bg-blue-100/60 text-xs">
                       {bid.catagory}
@@ -227,9 +251,24 @@ const BidsRequest = () => {
                   </td>
                   <td className="px-4 py-4 text-sm">
                     <div className="flex items-center gap-x-6">
-                      <button onClick={() => handleAccept(bid)} title="Mark as In Progress">✅</button>
-                      <button onClick={() => handleReject(bid)} title="Reject Bid">❌</button>
-                      <button onClick={() => handleDelete(bid)} title="Delete Bid">🗑️</button>
+                      <button
+                        onClick={() => handleAccept(bid)}
+                        title="Mark as In Progress"
+                      >
+                        ✅
+                      </button>
+                      <button
+                        onClick={() => handleReject(bid)}
+                        title="Reject Bid"
+                      >
+                        ❌
+                      </button>
+                      <button
+                        onClick={() => handleDelete(bid)}
+                        title="Delete Bid"
+                      >
+                        🗑️
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -248,7 +287,7 @@ const BidsRequest = () => {
                 className={`px-4 py-2 rounded-md ${
                   currentPage === 1
                     ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-blue-600 text-white hover:bg-blue-500"
+                    : "bg-blue-600  hover:bg-blue-500"
                 }`}
               >
                 Prev
@@ -262,7 +301,7 @@ const BidsRequest = () => {
                 className={`px-4 py-2 rounded-md ${
                   currentPage === totalPages
                     ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-blue-600 text-white hover:bg-blue-500"
+                    : "bg-blue-600  hover:bg-blue-500"
                 }`}
               >
                 Next
@@ -299,7 +338,7 @@ const BidsRequest = () => {
                 <div className="flex justify-center gap-4 mt-4">
                   <button
                     onClick={confirmDelete}
-                    className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                    className="px-6 py-2 bg-red-500  rounded-md hover:bg-red-600"
                   >
                     Confirm
                   </button>
@@ -314,7 +353,9 @@ const BidsRequest = () => {
             )}
 
             {/* Other modal types */}
-            {["deleteSuccess", "success", "reject", "failed"].includes(modal.type) && (
+            {["deleteSuccess", "success", "reject", "failed"].includes(
+              modal.type
+            ) && (
               <div>
                 <div
                   className={`text-5xl mb-4 ${
@@ -334,7 +375,7 @@ const BidsRequest = () => {
                 <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
                 <button
                   onClick={closeModal}
-                  className={`mt-4 px-6 py-2 rounded-md text-white ${
+                  className={`mt-4 px-6 py-2 rounded-md  ${
                     modal.type === "success" || modal.type === "deleteSuccess"
                       ? "bg-green-500 hover:bg-green-600"
                       : modal.type === "reject"

@@ -60,7 +60,7 @@ const MyBids = () => {
     }
   };
 
-  //Handle Delete Action 
+  //Handle Delete Action
   const handleDelete = (bid) => {
     setModal({
       type: "deleteConfirm",
@@ -128,11 +128,19 @@ const MyBids = () => {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="py-3.5 px-4 text-sm text-gray-500">Title</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">Deadline</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
+                      Deadline
+                    </th>
                     <th className="py-3.5 px-4 text-sm text-gray-500">Price</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">Category</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">Status</th>
-                    <th className="py-3.5 px-4 text-sm text-gray-500">Actions</th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
+                      Category
+                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
+                      Status
+                    </th>
+                    <th className="py-3.5 px-4 text-sm text-gray-500">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -180,7 +188,7 @@ const MyBids = () => {
                           onClick={() => handleComplete(bid)}
                           title="Mark Complete"
                           disabled={bid.status !== "In Progress"}
-                          className={`transition-colors duration-200 ${
+                          className={` duration-200 ${
                             bid.status === "In Progress"
                               ? "text-green-500 hover:text-green-700"
                               : "text-gray-300 cursor-not-allowed"
@@ -241,7 +249,7 @@ const MyBids = () => {
                     onClick={() => setCurrentPage(1)}
                     className={`px-3 py-1 text-sm rounded-md ${
                       currentPage === 1
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-600 "
                         : "text-blue-600 hover:bg-blue-100"
                     }`}
                   >
@@ -258,7 +266,7 @@ const MyBids = () => {
                     onClick={() => setCurrentPage(i)}
                     className={`px-3 py-1 text-sm rounded-md ${
                       currentPage === i
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-600 "
                         : "text-blue-600 hover:bg-blue-100"
                     }`}
                   >
@@ -268,14 +276,15 @@ const MyBids = () => {
               }
 
               if (end < totalPages) {
-                if (end < totalPages - 1) pages.push(<span key="e-dots">...</span>);
+                if (end < totalPages - 1)
+                  pages.push(<span key="e-dots">...</span>);
                 pages.push(
                   <button
                     key={totalPages}
                     onClick={() => setCurrentPage(totalPages)}
                     className={`px-3 py-1 text-sm rounded-md ${
                       currentPage === totalPages
-                        ? "bg-blue-600 text-white"
+                        ? "bg-blue-600 "
                         : "text-blue-600 hover:bg-blue-100"
                     }`}
                   >
@@ -329,7 +338,7 @@ const MyBids = () => {
               <h3 className="text-lg font-semibold mb-2">{modal.message}</h3>
               <button
                 onClick={closeModal}
-                className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                className="mt-4 px-6 py-2 bg-green-500  rounded-md hover:bg-green-600"
               >
                 Close
               </button>
@@ -343,7 +352,7 @@ const MyBids = () => {
               <div className="flex justify-center gap-4 mt-4">
                 <button
                   onClick={confirmDelete}
-                  className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                  className="px-6 py-2 bg-red-500  rounded-md hover:bg-red-600"
                 >
                   Confirm
                 </button>

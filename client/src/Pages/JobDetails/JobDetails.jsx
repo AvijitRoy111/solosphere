@@ -78,7 +78,7 @@ const JobDetails = () => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_api}/bids`,
-        bidData,
+        bidData
       );
       if (data.data.insertedId) {
         setIsModalOpen(true);
@@ -96,7 +96,7 @@ const JobDetails = () => {
           <span className="text-sm font-light text-gray-800 ">
             Deadline: {deadline}
           </span>
-          <span className="px-4 py-1 text-xs text-white font-bold uppercase bg-blue-700 rounded-full ">
+          <span className="px-4 py-1 text-xs  font-bold uppercase bg-blue-700 rounded-full ">
             {catagory}
           </span>
         </div>
@@ -147,8 +147,8 @@ const JobDetails = () => {
                 id="price"
                 name="price"
                 type="number"
-                className="w-full px-4 py-2 mt-2 bg-white text-black border border-gray-300 rounded-md 
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-black"
+                className="w-full px-4 py-2 mt-2 bg-white  border border-gray-300 rounded-md 
+        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:"
               />
             </div>
 
@@ -162,8 +162,8 @@ const JobDetails = () => {
                 type="email"
                 readOnly
                 defaultValue={user?.email}
-                className="w-full px-4 py-2 mt-2 bg-white text-black border border-gray-300 rounded-md 
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-black"
+                className="w-full px-4 py-2 mt-2 bg-white  border border-gray-300 rounded-md 
+        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:"
               />
             </div>
 
@@ -176,15 +176,15 @@ const JobDetails = () => {
                 name="comment"
                 type="text"
                 placeholder="Write your comment..."
-                className="w-full px-4 py-2 mt-2 bg-white text-black border border-gray-300 rounded-md 
-        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:text-black"
+                className="w-full px-4 py-2 mt-2 bg-white  border border-gray-300 rounded-md 
+        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white focus:"
               />
             </div>
 
             <div className="flex flex-col gap-2">
               <label className="text-gray-700">Deadline</label>
               <DatePicker
-                className="bg-white text-black px-6 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-white  px-6 py-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
               />
@@ -194,7 +194,7 @@ const JobDetails = () => {
           <div className="flex justify-end mt-6">
             <button
               type="submit"
-              className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
+              className="px-8 py-2.5 leading-5   duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
             >
               Place Bid
             </button>
@@ -233,7 +233,7 @@ const JobDetails = () => {
             {/* Close Button */}
             <button
               onClick={() => setIsModalOpen(false)}
-              className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              className="mt-6 px-6 py-2 bg-blue-600  rounded-md hover:bg-blue-700 transition"
             >
               Close
             </button>

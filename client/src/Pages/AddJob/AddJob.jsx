@@ -37,7 +37,7 @@ const AddJob = () => {
         photo: user?.photoURL,
       },
     };
-    console.log(jobData)
+    console.log(jobData);
 
     try {
       const { data } = await axios.post(
@@ -145,7 +145,7 @@ const AddJob = () => {
             ></textarea>
           </div>
           <div className="flex justify-end mt-6">
-            <button className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transhtmlForm bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
+            <button className="px-8 py-2.5 leading-5   duration-300 transhtmlForm bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
               Save
             </button>
           </div>
@@ -184,9 +184,9 @@ const AddJob = () => {
             <button
               onClick={() => {
                 setIsModalOpen(false);
-                navigate("/my-posted-job"); 
+                navigate("/my-posted-job");
               }}
-              className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              className="mt-6 px-6 py-2 bg-blue-600  rounded-md hover:bg-blue-700 transition"
             >
               Close
             </button>

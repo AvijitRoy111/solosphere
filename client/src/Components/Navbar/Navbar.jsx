@@ -35,12 +35,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full fixed z-50 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700 transition-colors duration-300 px-4 md:px-12 lg:px-20">
+    <nav className="w-full fixed z-50 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700  duration-300 px-4 md:px-12 lg:px-20">
       <div className="flex justify-between items-center h-16">
         {/* Left: Logo */}
         <div className="flex gap-2 items-center">
           <img className="w-auto h-8 brightness-200" src={logo} alt="Logo" />
-          <span className="font-extrabold text-xl text-gray-900 dark:text-white">
+          <span className="font-extrabold text-xl text-gray-900 dark:">
             SoloSphere
           </span>
         </div>
@@ -51,7 +51,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/"
-                className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+                className="hover:bg-blue-600 hover: px-3 py-1 rounded  duration-200"
               >
                 Home
               </Link>
@@ -59,7 +59,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/allJobs"
-                className="hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors duration-200"
+                className="hover:bg-blue-600 hover: px-3 py-1 rounded  duration-200"
               >
                 All Jobs
               </Link>
@@ -105,7 +105,7 @@ const Navbar = () => {
                       <Link
                         to="/add-job"
                         onClick={() => setShowDropdown(false)}
-                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover: transition"
                       >
                         Add Job
                       </Link>
@@ -114,7 +114,7 @@ const Navbar = () => {
                       <Link
                         to="/my-posted-job"
                         onClick={() => setShowDropdown(false)}
-                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover: transition"
                       >
                         My Posted Jobs
                       </Link>
@@ -123,7 +123,7 @@ const Navbar = () => {
                       <Link
                         to="/my-bids"
                         onClick={() => setShowDropdown(false)}
-                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover: transition"
                       >
                         My Bids
                       </Link>
@@ -132,7 +132,7 @@ const Navbar = () => {
                       <Link
                         to="/bids-request"
                         onClick={() => setShowDropdown(false)}
-                        className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition"
+                        className="block px-3 py-2 rounded hover:bg-blue-600 hover: transition"
                       >
                         Bid Requests
                       </Link>
@@ -140,7 +140,7 @@ const Navbar = () => {
                     <li>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left bg-gray-200 dark:bg-gray-700 py-2 px-3 rounded hover:bg-blue-500 hover:text-white transition"
+                        className="w-full text-left bg-gray-200 dark:bg-gray-700 py-2 px-3 rounded hover:bg-blue-500 hover: transition"
                       >
                         Logout
                       </button>
@@ -151,7 +151,7 @@ const Navbar = () => {
             </div>
           ) : (
             <User
-              className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+              className="w-6 h-6 text-gray-800 dark: cursor-pointer"
               onClick={() => navigate("/signIn")}
             />
           )}
@@ -185,7 +185,7 @@ const Navbar = () => {
             />
           ) : (
             <User
-              className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+              className="w-6 h-6 text-gray-800 dark: cursor-pointer"
               onClick={() => navigate("/signIn")}
             />
           )}
@@ -195,7 +195,7 @@ const Navbar = () => {
             onClick={() => setMenuOpen(true)}
             className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <Menu className="w-6 h-6 text-gray-900 dark:text-white" />
+            <Menu className="w-6 h-6 text-gray-900 dark:" />
           </button>
         </div>
       </div>
@@ -208,7 +208,7 @@ const Navbar = () => {
           </p>
           <button
             onClick={handleLogout}
-            className="w-full bg-gray-200 dark:bg-gray-700 py-1 rounded hover:bg-blue-500 text-white hover:text-white transition"
+            className="w-full bg-gray-200 dark:bg-gray-700 py-1 rounded hover:bg-blue-500  hover: transition"
           >
             Logout
           </button>
@@ -232,7 +232,7 @@ const Navbar = () => {
               />
             ) : (
               <Link to="/signIn">
-                <User className="w-6 h-6 text-gray-800 dark:text-white" />
+                <User className="w-6 h-6 text-gray-800 dark:" />
               </Link>
             )}
             <button
@@ -259,7 +259,7 @@ const Navbar = () => {
             <Link
               to="/"
               onClick={() => setMenuOpen(false)}
-              className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+              className="block px-3 py-2 rounded hover:bg-blue-600 hover:"
             >
               Home
             </Link>
@@ -268,7 +268,7 @@ const Navbar = () => {
             <Link
               to="/allJobs"
               onClick={() => setMenuOpen(false)}
-              className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+              className="block px-3 py-2 rounded hover:bg-blue-600 hover:"
             >
               All Jobs
             </Link>
@@ -280,7 +280,7 @@ const Navbar = () => {
                 <Link
                   to="/add-job"
                   onClick={() => setMenuOpen(false)}
-                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:"
                 >
                   Add Job
                 </Link>
@@ -289,7 +289,7 @@ const Navbar = () => {
                 <Link
                   to="/my-posted-job"
                   onClick={() => setMenuOpen(false)}
-                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:"
                 >
                   My Posted Jobs
                 </Link>
@@ -298,7 +298,7 @@ const Navbar = () => {
                 <Link
                   to="/my-bids"
                   onClick={() => setMenuOpen(false)}
-                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:"
                 >
                   My Bids
                 </Link>
@@ -307,7 +307,7 @@ const Navbar = () => {
                 <Link
                   to="/bids-request"
                   onClick={() => setMenuOpen(false)}
-                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                  className="block px-3 py-2 rounded hover:bg-blue-600 hover:"
                 >
                   Bid Requests
                 </Link>
@@ -318,7 +318,7 @@ const Navbar = () => {
                     handleLogout();
                     setMenuOpen(false);
                   }}
-                  className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white text-center py-2 rounded hover:bg-blue-500 hover:text-white transition"
+                  className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark: text-center py-2 rounded hover:bg-blue-500 hover: transition"
                 >
                   Logout
                 </button>
@@ -329,7 +329,7 @@ const Navbar = () => {
               <Link
                 to="/signIn"
                 onClick={() => setMenuOpen(false)}
-                className="block px-3 py-2 rounded hover:bg-blue-600 hover:text-white"
+                className="block px-3 py-2 rounded hover:bg-blue-600 hover:"
               >
                 Login
               </Link>

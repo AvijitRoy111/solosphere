@@ -11,12 +11,20 @@ const UpdateJob = () => {
   const { user } = useContext(AuthContext);
 
   // destructure
-  const { _id, job_title, deadline, min_price, max_price, description, catagory } = updateJobs.data;
+  const {
+    _id,
+    job_title,
+    deadline,
+    min_price,
+    max_price,
+    description,
+    catagory,
+  } = updateJobs.data;
 
   // convert deadline to Date
   const [startDate, setStartDate] = useState(
-  deadline ? new Date(deadline) : new Date()
-);
+    deadline ? new Date(deadline) : new Date()
+  );
   const [showSuccess, setShowSuccess] = useState(false);
 
   const handleUpdate = async (e) => {
@@ -36,7 +44,7 @@ const UpdateJob = () => {
     try {
       const { data } = await axios.put(
         `${import.meta.env.VITE_api}/jobs/${_id}`,
-        updatedJob, 
+        updatedJob
       );
 
       if (data.data.modifiedCount > 0) {
@@ -49,7 +57,7 @@ const UpdateJob = () => {
 
   const handleCloseModal = () => {
     setShowSuccess(false);
-    navigate("/my-posted-job"); 
+    navigate("/my-posted-job");
   };
 
   return (
@@ -145,7 +153,7 @@ const UpdateJob = () => {
           <div className="flex justify-end mt-6">
             <button
               type="submit"
-              className="px-8 py-2.5 leading-5 text-white bg-gray-700 rounded-md hover:bg-gray-600"
+              className="px-8 py-2.5 leading-5  bg-gray-700 rounded-md hover:bg-gray-600"
             >
               Update
             </button>
@@ -163,7 +171,7 @@ const UpdateJob = () => {
             </h3>
             <button
               onClick={handleCloseModal}
-              className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg"
+              className="mt-4 px-4 py-2 bg-green-500  rounded-lg"
             >
               Close
             </button>

@@ -1,11 +1,12 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import image2 from "../../assets/images/carosul-2.jpg"
-import image3 from "../../assets/images/carosul-3.jpg"
-import image1 from "../../assets/images/carosul-4.jpg"
+import image2 from "../../assets/images/carosul-2.jpg";
+import image3 from "../../assets/images/carosul-3.jpg";
+import image1 from "../../assets/images/carosul-4.jpg";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Link } from "react-router-dom";
 
 const SweiperSlider = () => {
   const slides = [
@@ -59,16 +60,17 @@ const SweiperSlider = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
 
               {/* Content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-6">
-                <h2 className="text-4xl font-bold mb-4">{slide.title}</h2>
-                <p className="mb-6">{slide.desc}</p>
+              <div className="absolute inset-0 flex flex-col items-center justify-center  text-center px-6">
+                <h2 className="text-4xl font-bold text-white mb-4">{slide.title}</h2>
+                <p className="mb-6 text-white">{slide.desc}</p>
                 <div className="flex gap-4 justify-center">
-                  <button className="px-6 py-2 bg-blue-700 rounded-lg shadow hover:bg-primary/80 transition">
+                  <li><a href="TabCatagory"><button className="px-6 py-2 bg-blue-700 text-white rounded-lg shadow hover:bg-primary/80 transition">
                     Explore
-                  </button>
-                  <button className="px-6 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-200 transition">
-                    Learn More
-                  </button>
+                  </button></a></li>
+                  <Link to="/allJobs"><button className="px-6 py-2 bg-white text-black rounded-lg shadow hover:bg-gray-200 transition">
+                    See More ...
+                  </button></Link>
+                  
                 </div>
               </div>
             </div>
