@@ -97,13 +97,13 @@ const AddJob = () => {
             </div>
 
             <div className="flex flex-col gap-2 ">
-              <label className="text-gray-70" htmlFor="category">
+              <label className="text-gray-70 text-gray-700" htmlFor="category">
                 Category
               </label>
               <select
                 name="category"
                 id="category"
-                className="border p-2 rounded-md bg-gray-50"
+                className="border p-2 rounded-md text-gray-700 bg-gray-50"
               >
                 <option value="Web Development">Web Development</option>
                 <option value="Graphics Design">Graphics Design</option>
@@ -145,7 +145,7 @@ const AddJob = () => {
             ></textarea>
           </div>
           <div className="flex justify-end mt-6">
-            <button className="px-8 py-2.5 leading-5   duration-300 transhtmlForm bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
+            <button className="px-8 py-2.5 leading-5   duration-300 transhtmlForm bg-gray-700 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">
               Save
             </button>
           </div>

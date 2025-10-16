@@ -113,9 +113,9 @@ const MyBids = () => {
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
-        <h2 className="text-lg font-medium text-gray-800">My Bids</h2>
-        <span className="font-bold px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">
-          {bids.length} Bid
+        <h2 className="text-lg font-medium ">My Bids</h2>
+        <span className="font-bold px-3 py-2 text-base text-white bg-blue-600 rounded-full">
+          {bids.length} Bids
         </span>
       </div>
 
@@ -312,9 +312,9 @@ const MyBids = () => {
 
           {/* Bids per page */}
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-700">Bids per page:</span>
+            <span className="text-sm ">Bids per page:</span>
             <select
-              className="border bg-white text-sm p-1.5 rounded-md"
+              className="border bg-white text-black text-sm p-1.5 rounded-md"
               value={bidsPerPage}
               onChange={(e) => {
                 setBidsPerPage(Number(e.target.value));

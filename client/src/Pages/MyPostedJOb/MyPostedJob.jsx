@@ -81,8 +81,10 @@ const MyPostedJob = () => {
   return (
     <section className="container px-4 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
-        <h2 className="text-lg font-medium text-gray-800">My Posted Jobs</h2>
-        <span className="px-3 py-1 font-bold text-xs text-blue-600 bg-blue-100 rounded-full">
+        <h2 className="text-lg font-medium  "> 
+          My Posted Jobs
+        </h2>
+        <span className="px-3 py-2 text-base font-bold  text-white bg-blue-600 rounded-full">
           {jobs.length} Jobs
         </span>
       </div>
@@ -211,9 +213,11 @@ const MyPostedJob = () => {
 
                 {/* Per Page Selector */}
                 <div className="flex items-center gap-2">
-                  <label className="text-gray-600 text-sm">Per page:</label>
+                  <label className="text-gray-600 text-sm dark:text-white">
+                    Per page:
+                  </label>
                   <select
-                    className="border bg-white p-2 rounded-md"
+                    className="border bg-white p-2 text-black rounded-md"
                     value={jobsPerPage}
                     onChange={(e) => {
                       setJobsPerPage(Number(e.target.value));
