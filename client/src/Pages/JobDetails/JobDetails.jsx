@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const JobDetails = () => {
+
   const { user } = useContext(AuthContext);
   const job = useLoaderData();
   console.log(job.data);
@@ -50,15 +51,15 @@ const JobDetails = () => {
       return;
     }
 
-    // if (!email) {
-    //   toast.error("Email is required!");
-    //   return;
-    // }
+    if (!email) {
+      toast.error("Email is required!");
+      return;
+    }
 
-    // if (user?.email === buyer?.email) {
-    //   toast.error("You cannot bid on your own job!");
-    //   return;
-    // }
+    if (user?.email === buyer?.email) {
+      toast.error("You cannot bid on your own job!");
+      return;
+    }
 
     const bidData = {
       jobId,
