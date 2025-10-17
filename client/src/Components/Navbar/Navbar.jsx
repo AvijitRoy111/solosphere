@@ -195,12 +195,12 @@ const Navbar = () => {
             onClick={() => setMenuOpen(true)}
             className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <Menu className="w-6 h-6 text-gray-900 dark:" />
+            <Menu className="w-6 h-6 text-gray-900 dark:text-white" />
           </button>
         </div>
       </div>
 
-      {/* ✅ Mobile-only small dropdown */}
+      {/*  Mobile-only small dropdown */}
       {isMobile && showDropdown && user && !menuOpen && (
         <div className="absolute right-4 top-16 bg-white dark:bg-gray-800 shadow-lg rounded-md p-3 w-32 z-50">
           <p className="text-sm text-center font-semibold text-gray-700 dark:text-gray-100 mb-2">
@@ -208,7 +208,7 @@ const Navbar = () => {
           </p>
           <button
             onClick={handleLogout}
-            className="w-full bg-gray-200 dark:bg-gray-700 py-1 rounded hover:bg-blue-500  hover: transition"
+            className="w-full bg-gray-200 dark:bg-gray-700 text-white py-1 rounded hover:bg-blue-500  hover: transition"
           >
             Logout
           </button>
@@ -232,7 +232,7 @@ const Navbar = () => {
               />
             ) : (
               <Link to="/signIn">
-                <User className="w-6 h-6 text-gray-800 dark:" />
+                <User className="w-6 h-6 text-gray-800 dark:text-white" />
               </Link>
             )}
             <button
@@ -318,7 +318,7 @@ const Navbar = () => {
                     handleLogout();
                     setMenuOpen(false);
                   }}
-                  className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark: text-center py-2 rounded hover:bg-blue-500 hover: transition"
+                  className="w-full bg-gray-200 dark:bg-gray-700  text-white text-center py-2 rounded hover:bg-blue-500 hover: transition"
                 >
                   Logout
                 </button>
